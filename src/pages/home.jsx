@@ -17,10 +17,10 @@ export const Home = () => {
       <div className="m-[8px]">
         <div className="bg-pink-500">Header</div>
         <div className="grid grid-cols-12 gap-3">
-          <div className="col-span-4">
+          <div className="col-span-3">
             <SideBar onClick={handleCountUp} onSearch={handleSearch} />
           </div>
-          <div className="col-span-8">
+          <div className="col-span-9">
             <Main count={count} />
           </div>
         </div>
