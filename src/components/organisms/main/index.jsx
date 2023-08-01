@@ -1,13 +1,9 @@
-export default function App() {
+export const Main = (props) => {
+  const { count } = props;
   return (
-    <>
-      <div className="m-[8px]">
-        <div className="bg-pink-500">Header</div>
-        <div className="grid grid-cols-12 gap-3">
-          <div className="col-span-4">Side bar</div>
-          <div className="col-span-8">Main</div>
-        </div>
-      </div>
-    </>
+    <div>
+      <h1>Mainです</h1>
+      <p>{count}</p>
+    </div>
   );
-}
+};
