@@ -1,5 +1,8 @@
 import { SideBar } from "../components/organisms/sidebar";
 import { Main } from "../components/organisms/main";
+import { useState } from "react";
+import { Header } from "../components/organisms/header";
+
 const samplePosts = [
   {
     post_id: 1,
