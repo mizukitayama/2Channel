@@ -20,7 +20,7 @@ export const Home = () => {
           <div className="col-span-4">
             <SideBar onClick={handleCountUp} onSearch={handleSearch} />
           </div>
-          <div className="col-span-4">
+          <div className="col-span-8">
             <Main count={count} />
           </div>
         </div>
