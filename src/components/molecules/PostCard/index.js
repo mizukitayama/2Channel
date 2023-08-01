@@ -4,10 +4,8 @@ import {
   Form,
   Button,
   Card,
-  Divider,
   Icon,
   Input,
-  Select,
 } from "semantic-ui-react";
 
 export const PostCard = (props) => {

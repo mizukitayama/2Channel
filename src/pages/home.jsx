@@ -139,9 +139,9 @@ export const Home = () => {
     <div>
       <div className="m-[32px]">
         <Header />
-        <div className="grid grid-cols-12 gap-3">
+        <div className="grid grid-cols-12 gap-[24px]">
           <div className="col-span-3">
-            <SideBar onSearch={handleSearch} />
+            <SideBar searchByCategory={handleSearch} />
           </div>
           <div className="col-span-9">
             <Main posts={posts} />
