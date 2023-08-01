@@ -11,8 +11,7 @@ import {
 import { PostCard } from "../../molecules/PostCard";
 
 export const Main = (props) => {
-  // const { posts } = props;
-  const posts = Array(10).fill(0);
+  const { posts } = props;
   return (
     <div className="m-3">
       <div className="flex justify-between">
@@ -20,7 +19,7 @@ export const Main = (props) => {
         <Input icon="search" placeholder="Search..." className="" />
       </div>
       {posts.map((post) => (
-        <PostCard />
+        <PostCard key={post.id} post={post} />
       ))}
     </div>
   );

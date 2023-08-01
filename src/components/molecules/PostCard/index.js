@@ -7,9 +7,11 @@ import {
   Divider,
   Icon,
   Input,
+  Select,
 } from "semantic-ui-react";
 
-export const PostCard = ({ post }) => {
+export const PostCard = (props) => {
+  const { post } = props;
   const [open, setOpen] = useState(false);
   return (
     <Card fluid>
@@ -18,11 +20,11 @@ export const PostCard = ({ post }) => {
           <Comment>
             {/* <Comment.Avatar src="/images/avatar/small/matt.jpg" /> */}
             <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
+              <Comment.Author as="a">{post.user_name}</Comment.Author>
               <Comment.Metadata>
-                <div>Today at 5:42PM</div>
+                <div>{post.created_at}</div>
               </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
+              <Comment.Text>{post.post_text}</Comment.Text>
             </Comment.Content>
           </Comment>
         </Comment.Group>
@@ -33,90 +35,59 @@ export const PostCard = ({ post }) => {
                 質問を閉じる <Icon name="angle up" />
               </span>
             </p>
+
             <Comment.Group>
-              <Comment>
-                {/* <Comment.Avatar src="/images/avatar/small/matt.jpg" /> */}
-                <Comment.Content>
-                  <Comment.Author as="a">Matt</Comment.Author>
-                  <Comment.Metadata>
-                    <div>Today at 5:42PM</div>
-                  </Comment.Metadata>
-                  <Comment.Text>How artistic!</Comment.Text>
-                  <Comment.Actions>
-                    <Comment.Action>Reply</Comment.Action>
-                  </Comment.Actions>
-                </Comment.Content>
-              </Comment>
-
-              <Comment>
-                {/* <Comment.Avatar src="/images/avatar/small/elliot.jpg" /> */}
-                <Comment.Content>
-                  <Comment.Author as="a">Elliot Fu</Comment.Author>
-                  <Comment.Metadata>
-                    <div>Yesterday at 12:30AM</div>
-                  </Comment.Metadata>
-                  <Comment.Text>
-                    <p>
-                      This has been very useful for my research. Thanks as well!
-                    </p>
-                  </Comment.Text>
-                  <Comment.Actions>
-                    <Comment.Action>Reply</Comment.Action>
-                  </Comment.Actions>
-                </Comment.Content>
-                <Comment.Group>
-                  <Comment>
-                    {/* <Comment.Avatar src="/images/avatar/small/jenny.jpg" /> */}
-                    <Comment.Content>
-                      <Comment.Author as="a">Jenny Hess</Comment.Author>
-                      <Comment.Metadata>
-                        <div>Just now</div>
-                      </Comment.Metadata>
-                      <Comment.Text>
-                        Elliot you are always so right :)
-                      </Comment.Text>
-                      <Comment.Actions>
-                        <Comment.Action>Reply</Comment.Action>
-                      </Comment.Actions>
-                    </Comment.Content>
-                  </Comment>
-                </Comment.Group>
-              </Comment>
-
-              <Comment>
-                {/* <Comment.Avatar src="/images/avatar/small/joe.jpg" /> */}
-                <Comment.Content>
-                  <Comment.Author as="a">Joe Henderson</Comment.Author>
-                  <Comment.Metadata>
-                    <div>5 days ago</div>
-                  </Comment.Metadata>
-                  <Comment.Text>
-                    Dude, this is awesome. Thanks so much
-                  </Comment.Text>
-                  <Comment.Actions>
-                    <Comment.Action>Reply</Comment.Action>
-                  </Comment.Actions>
-                </Comment.Content>
-              </Comment>
-
+              {post.question_list.map((question) => (
+                <Comment key={question.id}>
+                  {/* <Comment.Avatar src="/images/avatar/small/elliot.jpg" /> */}
+                  <Comment.Content>
+                    <Comment.Author as="a">社員の人</Comment.Author>
+                    <Comment.Metadata>
+                      <div>{question.created_at}</div>
+                    </Comment.Metadata>
+                    <Comment.Text>
+                      <p>{question.question_text}</p>
+                    </Comment.Text>
+                    <Comment.Actions>
+                      <Comment.Action>Reply</Comment.Action>
+                    </Comment.Actions>
+                  </Comment.Content>
+                  <Comment.Group>
+                    {question.reply_list.map((reply) => (
+                      <Comment>
+                        {/* <Comment.Avatar src="/images/avatar/small/jenny.jpg" /> */}
+                        <Comment.Content>
+                          <Comment.Author as="a">社員の人</Comment.Author>
+                          <Comment.Metadata>
+                            <div>{reply.created_at}</div>
+                          </Comment.Metadata>
+                          <Comment.Text>{reply.reply_text}</Comment.Text>
+                          <Comment.Actions>
+                            <Comment.Action>Reply</Comment.Action>
+                          </Comment.Actions>
+                        </Comment.Content>
+                      </Comment>
+                    ))}
+                  </Comment.Group>
+                </Comment>
+              ))}
               <Form reply>
-                <Form.TextArea />
-                <Button
-                  content="Add Reply"
-                  labelPosition="left"
-                  icon="edit"
-                  primary
-                />
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  action
+                  size="mini"
+                  fluid
+                >
+                  <input placeholder="質問内容を入力してください" />
+                  <Button type="submit" size="mini" primary>
+                    質問する
+                  </Button>
+                </Input>
               </Form>
             </Comment.Group>
           </>
         ) : (
-          // <Button
-          //   content="質問を見る"
-          //   onClick={() => {
-          //     setOpen(true);
-          //   }}
-          // />
           <p style={{ textAlign: "center" }}>
             <span onClick={() => setOpen(true)}>
               1件の質問
