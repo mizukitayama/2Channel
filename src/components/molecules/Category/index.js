@@ -1,7 +1,16 @@
-export const Category = ({category}) => {
+import { Label } from "semantic-ui-react";
+
+export const Category = ({ category }) => {
   return (
     <>
-      <div className="my-[16px] py-[16px] border rounded-md border-gray">{category}</div>
+      <div className="my-[16px] py-[16px] border rounded-md border-gray">
+        <Label circular color={"blue"}>
+          1
+        </Label>
+				<div classname="ml-[2px]">
+        	{category}
+				</div>
+      </div>
     </>
   );
 };
