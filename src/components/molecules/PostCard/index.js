@@ -105,7 +105,7 @@ export const PostCard = ({ post }) => {
                   content="Add Reply"
                   labelPosition="left"
                   icon="edit"
-                  primary
+                  style={{ backgroundColor: "#005BAB", color: "white"}}
                 />
               </Form>
             </Comment.Group>

@@ -1,13 +1,4 @@
-import { useState } from "react";
-import {
-  Comment,
-  Form,
-  Button,
-  Card,
-  Divider,
-  Icon,
-  Input,
-} from "semantic-ui-react";
+import { Input } from "semantic-ui-react";
 import { PostCard } from "../../molecules/PostCard";
 
 export const Main = (props) => {
@@ -17,7 +8,7 @@ export const Main = (props) => {
     <div className="m-3">
       <div className="flex justify-between">
         <h2 className="pt-1 mb-0">全カテゴリー</h2>
-        <Input icon="search" placeholder="Search..." className="" />
+        <Input icon="search" placeholder="Search..." />
       </div>
       {posts.map((post) => (
         <PostCard />
