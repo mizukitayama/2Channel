@@ -137,13 +137,13 @@ export const Home = () => {
 
   return (
     <div>
-      <div className="m-[32px]">
+      <div className="m-[32px] container">
         <Header />
-        <div className="grid grid-cols-12 gap-[24px]">
-          <div className="col-span-3">
+        <div className="grid grid-cols-4 gap-[24px]">
+          <div className="col-span-1">
             <SideBar searchByCategory={handleSearch} />
           </div>
-          <div className="col-span-9">
+          <div className="col-span-3">
             <Main posts={posts} />
           </div>
         </div>
