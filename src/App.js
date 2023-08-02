@@ -4,6 +4,7 @@ import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AdminPage } from "./pages/adminPage.jsx";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
                 element={<Home />}
                 className="absolute inset-0"
               />
+              <Route path="/admin" element={<AdminPage />} />
               <Route
                 path="/login"
                 element={<Login />}
