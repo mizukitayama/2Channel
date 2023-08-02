@@ -1,7 +1,9 @@
 import { SideBar } from "../components/organisms/sidebar";
 import { Main } from "../components/organisms/main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../components/organisms/header";
+import { CategoryApi } from "../api/CategoryApi";
+import { PostApi } from "../api/PostApi";
 
 const samplePosts = [
   {
@@ -57,13 +59,7 @@ const samplePosts = [
         question_id: 103,
         question_text: "Sample question for post 2?",
         created_at: "2023-08-01 09:12:40",
-        reply_list: [
-          {
-            reply_id: 204,
-            reply_text: "Sample reply to question for post 2.",
-            created_at: "2023-08-01 09:13:15",
-          },
-        ],
+        reply_list: [],
       },
     ],
   },
@@ -131,20 +127,69 @@ const samplePosts = [
 
 export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
-  const handleSearch = () => {
-    console.log("検索ボタンが押されました");
+  const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
+  const [tasksLoading, setTasksLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+
+  const fetchPosts = () => {
+    const postApi = new PostApi();
+    postApi
+      .getPosts()
+      .then((res) => {
+        setPosts(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
+
+  const fetchCategories = () => {
+    const categoryApi = new CategoryApi();
+    categoryApi
+      .getCategories()
+      .then((res) => {
+        setCategories(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchPostsByCategory = (category) => {
+    console.log("searching by category: ", category);
+    const postApi = new PostApi();
+    postApi
+      .getPosts({
+        category: category,
+      })
+      .then((res) => {
+        setPosts(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  useEffect(() => {
+    // TODO: バックエンドと通信できるようになったら有効にする
+    fetchPosts();
+    // fetchCategories();
+  }, []);
 
   return (
     <div>
+      {categories.join(", ")}
       <div className="mb-[32px] mx-[32px] container">
         <Header />
         <div className="md:grid md:grid-cols-4 md:gap-[32px]">
           <div className="md:col-span-1">
-            <SideBar searchByCategory={handleSearch} />
+            <SideBar
+              categories={categories}
+              onItemClick={fetchPostsByCategory}
+            />
           </div>
           <div className="md:col-span-3">
-            <Main posts={posts} />
+            <Main posts={posts} loading={tasksLoading} />
           </div>
         </div>
       </div>
