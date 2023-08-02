@@ -129,6 +129,30 @@ export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
   const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
 
+  const fetchPosts = () => {
+    const postApi = new PostApi();
+    postApi
+      .getPosts()
+      .then((res) => {
+        setPosts(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const fetchCategories = () => {
+    const categoryApi = new CategoryApi();
+    categoryApi
+      .getCategories()
+      .then((res) => {
+        setCategories(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const fetchPostsByCategory = (category) => {
     console.log("searching by category: ", category);
     const postApi = new PostApi();
@@ -144,31 +168,10 @@ export const Home = () => {
       });
   };
 
-  const fetchPostsByKeyword = (keyword) => {
-    console.log("searching by keyword: ", keyword);
-    // TODO: キーワード検索
-  };
-
   useEffect(() => {
-    const postApi = new PostApi();
-    postApi
-      .getPosts()
-      .then((res) => {
-        setPosts(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-    const categoryApi = new CategoryApi();
-    categoryApi
-      .getCategories()
-      .then((res) => {
-        setCategories(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // TODO: バックエンドと通信できるようになったら有効にする
+    // fetchPosts();
+    // fetchCategories();
   }, []);
 
   return (
