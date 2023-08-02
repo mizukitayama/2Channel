@@ -3,6 +3,7 @@ import { Main } from "../components/organisms/main";
 import { useEffect, useState } from "react";
 import { Header } from "../components/organisms/header";
 import { CategoryApi } from "../api/CategoryApi";
+import { PostApi } from "../api/PostApi";
 
 const samplePosts = [
   {
@@ -128,12 +129,22 @@ export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
   const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
 
-  const handleSearchByCategory = (category) => {
+  const fetchPostsByCategory = (category) => {
     console.log("searching by category: ", category);
-    // TODO: カテゴリ検索
+    const postApi = new PostApi();
+    postApi
+      .getPosts({
+        category: category,
+      })
+      .then((res) => {
+        setPosts(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
-  const handleSearchByKeyword = (keyword) => {
+  const fetchPostsByKeyword = (keyword) => {
     console.log("searching by keyword: ", keyword);
     // TODO: キーワード検索
   };
@@ -159,7 +170,7 @@ export const Home = () => {
           <div className="md:col-span-1">
             <SideBar
               categories={categories}
-              searchByCategory={handleSearchByCategory}
+              onItemClick={fetchPostsByCategory}
             />
           </div>
           <div className="md:col-span-3">

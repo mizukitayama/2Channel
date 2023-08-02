@@ -2,7 +2,7 @@ import { Category } from "../../molecules/Category";
 import { Icon } from "semantic-ui-react";
 
 export const SideBar = (props) => {
-  const { searchByCategory, categories } = props;
+  const { onItemClick, categories } = props;
   return (
     <>
       <div className="hidden md:block">
@@ -11,7 +11,7 @@ export const SideBar = (props) => {
             <Category
               key={category}
               category={category}
-              onClick={() => searchByCategory(category)}
+              onClick={() => onItemClick(category)}
             />
           ))}
         </div>

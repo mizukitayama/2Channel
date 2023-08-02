@@ -6,8 +6,9 @@ export class PostApi {
     this.apiClient = new ApiClient();
   }
 
-  async getPosts() {
-    return await this.apiClient.get(POSTS.GET);
+  async getPosts(queries) {
+    const query = new URLSearchParams(queries);
+    return await this.apiClient.get(POSTS.GET + query ? `?${query}` : "");
   }
 
   async postQuestion(postId, params) {
