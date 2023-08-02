@@ -1,7 +1,8 @@
 import { SideBar } from "../components/organisms/sidebar";
 import { Main } from "../components/organisms/main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "../components/organisms/header";
+import { CategoryApi } from "../api/CategoryApi";
 
 const samplePosts = [
   {
@@ -125,17 +126,41 @@ const samplePosts = [
 
 export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
-  const handleSearch = () => {
-    console.log("検索ボタンが押されました");
+  const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
+
+  const handleSearchByCategory = (category) => {
+    console.log("searching by category: ", category);
+    // TODO: カテゴリ検索
   };
+
+  const handleSearchByKeyword = (keyword) => {
+    console.log("searching by keyword: ", keyword);
+    // TODO: キーワード検索
+  };
+
+  useEffect(() => {
+    const categoryApi = new CategoryApi();
+    categoryApi
+      .getCategories()
+      .then((res) => {
+        setCategories(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <div>
+      {categories.join(", ")}
       <div className="mb-[32px] mx-[32px] container">
         <Header />
         <div className="md:grid md:grid-cols-4 md:gap-[32px]">
           <div className="md:col-span-1">
-            <SideBar searchByCategory={handleSearch} />
+            <SideBar
+              categories={categories}
+              searchByCategory={handleSearchByCategory}
+            />
           </div>
           <div className="md:col-span-3">
             <Main posts={posts} />
