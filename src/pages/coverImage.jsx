@@ -1,13 +1,12 @@
 import letters from "../images/letters.png";
 import React, { useState, useEffect } from "react";
-import "./coverImage.css";
 
 export const CoverImage = () => {
   const [fadeOutComplete, setFadeOutComplete] = useState(false);
 	useEffect(() => {
     const timer1 = setTimeout(() => {
       setFadeOutComplete(true);
-    }, 2800);
+    }, 2900);
 
     return () => {
       clearTimeout(timer1);

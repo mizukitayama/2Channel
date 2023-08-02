@@ -1,20 +1,19 @@
-import imagemd from "../images/image-md.png";
 import logo from "../images/logo.png";
 import React, { useState } from "react";
 import { Button, Checkbox, Container, Form } from "semantic-ui-react";
 import { ButtonComponent } from "../components/atoms/ButtonComponent";
+import { ButtonComponentWithFunction } from "../components/atoms/ButtonComponentWithFunction";
+import { useNavigate } from 'react-router-dom';
 
 export const Login = () => {
+  const navigate = useNavigate()
   const [isFetching, setIsFetching] = useState(false);
   const [workspaceId, setWorkspaceId] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
   const onLogin = () => {
-    // setIsFetching(!isFetching);
-    console.log(workspaceId);
-    console.log(userId);
-    console.log(password);
+    navigate('/')
   };
 
   const handleWorkspaceIdChange = (event) => {
@@ -62,7 +61,7 @@ export const Login = () => {
                       onChange={handlePasswordChange}
                     />
                   </Form.Field>
-                  <ButtonComponent value={"Log In"} onClick={onLogin} />
+                  <ButtonComponentWithFunction value={"Log In"} onClick={onLogin} />
                 </Form>
               </div>
             </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Header } from "../components/organisms/header";
 import { CategoryApi } from "../api/CategoryApi";
 import { PostApi } from "../api/PostApi";
+import { CoverImage } from "./coverImage";
 
 const samplePosts = [
   {
@@ -177,22 +178,25 @@ export const Home = () => {
   }, []);
 
   return (
-    <div>
-      {categories.join(", ")}
-      <div className="mb-[32px] mx-[32px] container">
-        <Header />
-        <div className="md:grid md:grid-cols-4 md:gap-[32px]">
-          <div className="md:col-span-1">
-            <SideBar
-              categories={categories}
-              onItemClick={fetchPostsByCategory}
-            />
-          </div>
-          <div className="md:col-span-3">
-            <Main posts={posts} loading={tasksLoading} />
+    <>
+      <div>
+        {categories.join(", ")}
+        <div className="mb-[32px] mx-[32px] container">
+          <Header />
+          <div className="md:grid md:grid-cols-4 md:gap-[32px]">
+            <div className="md:col-span-1">
+              <SideBar
+                categories={categories}
+                onItemClick={fetchPostsByCategory}
+              />
+            </div>
+            <div className="md:col-span-3">
+              <Main posts={posts} loading={tasksLoading} />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+      <CoverImage />
+    </>
   );
 };
