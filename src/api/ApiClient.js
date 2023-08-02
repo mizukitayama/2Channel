@@ -9,7 +9,7 @@ export default class ApiClient {
     try {
       const res = await axios.get(`${this.baseUrl}${path}`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMDE3NDE4LCJpYXQiOjE2OTA5MzEwMTgsImp0aSI6ImI2ZTcxODBiNDQ4MzQ2MWNiNzZmYjMyOGRjMWFjMTVjIiwidXNlcl9pZCI6MX0.pKh0HJY7nGCGe4MvsE2WkJ00ZaedjUdJe1HyPWw-Kqc`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMDQxNTA4LCJpYXQiOjE2OTA5NTUxMDgsImp0aSI6IjRjNDBhNjE4ZTk0ZjQyY2ZiNjkxMTk5MzgxMTViYThkIiwidXNlcl9pZCI6MX0.SWBwSaj8_nkgpZcJ1dek_S77w4GCtCcs1iWMJE6QEeA`,
         },
       });
       return res.data;
@@ -22,7 +22,7 @@ export default class ApiClient {
     try {
       const res = await axios.post(`${this.baseUrl}${path}`, params, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMDE3NDE4LCJpYXQiOjE2OTA5MzEwMTgsImp0aSI6ImI2ZTcxODBiNDQ4MzQ2MWNiNzZmYjMyOGRjMWFjMTVjIiwidXNlcl9pZCI6MX0.pKh0HJY7nGCGe4MvsE2WkJ00ZaedjUdJe1HyPWw-Kqc`,
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjkxMDQxNTA4LCJpYXQiOjE2OTA5NTUxMDgsImp0aSI6IjRjNDBhNjE4ZTk0ZjQyY2ZiNjkxMTk5MzgxMTViYThkIiwidXNlcl9pZCI6MX0.SWBwSaj8_nkgpZcJ1dek_S77w4GCtCcs1iWMJE6QEeA`,
         },
       });
       return res.data;

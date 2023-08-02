@@ -7,9 +7,16 @@ export const Main = (props) => {
   const { posts } = props;
   const [searchValue, setSearchValue] = useState("");
 
-  const handleSearchChange = (e) => {
+  const handleSearchInputChange = (e) => {
     setSearchValue(e.target.value);
   };
+
+  const searchHitPosts = posts.filter((post) => {
+    if (searchValue === "") {
+      return true;
+    }
+    return post.post_text.includes(searchValue); // 検索にヒットした投稿のみを抽出
+  });
 
   return (
     <div className="pb-[24px]">
@@ -20,10 +27,10 @@ export const Main = (props) => {
           icon="search"
           placeholder="Search..."
           value={searchValue}
-          onChange={handleSearchChange}
+          onChange={handleSearchInputChange}
         />
       </div>
-      {posts.map((post) => (
+      {searchHitPosts.map((post) => (
         <PostCard key={post.id} post={post} />
       ))}
     </div>
