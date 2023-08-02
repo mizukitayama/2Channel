@@ -1,16 +1,10 @@
 import { useState } from "react";
-import {
-  Comment,
-  Form,
-  Button,
-  Card,
-  Icon,
-  Input,
-} from "semantic-ui-react";
+import { Comment, Form, Button, Card, Icon, Input } from "semantic-ui-react";
 
 export const PostCard = (props) => {
   const { post } = props;
-  const [open, setOpen] = useState(false);
+  const [chatLogOpen, setChatLogOpen] = useState(false);
+  const [inputFormOpen, setInputFormOpen] = useState(false);
   return (
     <Card fluid>
       <Card.Content>
@@ -26,14 +20,32 @@ export const PostCard = (props) => {
             </Comment.Content>
           </Comment>
         </Comment.Group>
-        {open ? (
+        {inputFormOpen ? (
+          <Form reply className="my-3">
+            <Input type="text" placeholder="Search..." action size="mini" fluid>
+              <input placeholder="質問内容を入力してください" />
+              <Button type="submit" size="mini" primary>
+                質問する
+              </Button>
+            </Input>
+          </Form>
+        ) : (
+          <div className="text-right">
+            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+            <a className="select-none" onClick={() => setInputFormOpen(true)}>
+              質問する
+              <Icon name="talk" />
+            </a>
+          </div>
+        )}
+        {chatLogOpen ? (
           <>
-            <p style={{ textAlign: "center" }}>
-              <span onClick={() => setOpen(false)}>
+            <div className="text-center">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a className="select-none" onClick={() => setChatLogOpen(false)}>
                 質問を閉じる <Icon name="angle up" />
-              </span>
-            </p>
-
+              </a>
+            </div>
             <Comment.Group>
               {post.question_list.map((question) => (
                 <Comment key={question.id}>
@@ -69,29 +81,18 @@ export const PostCard = (props) => {
                   </Comment.Group>
                 </Comment>
               ))}
-              <Form reply>
-                <Input
-                  type="text"
-                  placeholder="Search..."
-                  action
-                  size="mini"
-                  fluid
-                >
-                  <input placeholder="質問内容を入力してください" />
-                  <Button type="submit" size="mini" primary>
-                    質問する
-                  </Button>
-                </Input>
-              </Form>
             </Comment.Group>
           </>
         ) : (
-          <p style={{ textAlign: "center" }}>
-            <span onClick={() => setOpen(true)}>
-              1件の質問
-              <Icon name="angle down" />
-            </span>
-          </p>
+          post.question_list.length > 0 && (
+            <div className="text-center">
+              {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
+              <a className="select-none" onClick={() => setChatLogOpen(true)}>
+                {post.question_list.length}件の質問
+                <Icon name="angle down" />
+              </a>
+            </div>
+          )
         )}
       </Card.Content>
     </Card>
