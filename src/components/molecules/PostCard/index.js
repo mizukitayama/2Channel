@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Comment, Form, Button, Card, Icon, Input } from "semantic-ui-react";
+import { PostApi } from "../../../api/PostApi";
 
 export const PostCard = (props) => {
   const { post } = props;
@@ -65,7 +66,7 @@ export const PostCard = (props) => {
                       <div>{getDateLabel(question.created_at)}</div>
                     </Comment.Metadata>
                     <Comment.Text>
-                      <p>{question.question_text}</p>
+                      <p>{question.text}</p>
                     </Comment.Text>
                     {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
                       <ReplyForm />
@@ -114,13 +115,22 @@ export const PostCard = (props) => {
 
 const ReplyForm = () => {
   const [inputFormOpen, setInputFormOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const postReply = () => {
+    setLoading(true);
+    // const postApi = new PostApi();
+    // postApi.postQuestion()
+  };
   return (
     <>
       {inputFormOpen ? (
-        <Form reply className="my-3">
+        <Form reply className="my-3" onSubmit={postReply}>
           <Input type="text" placeholder="Search..." action size="mini" fluid>
-            <input placeholder="返信内容を入力してください" />
-            <Button type="submit" size="mini" primary>
+            <input
+              placeholder="返信内容を入力してください"
+              disabled={loading}
+            />
+            <Button type="submit" size="mini" primary loading={loading}>
               返信する
             </Button>
           </Input>

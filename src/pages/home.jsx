@@ -127,7 +127,12 @@ const samplePosts = [
 
 export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
-  const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
+  const [categories, setCategories] = useState([
+    "sauna",
+    "food",
+    "tech",
+    "other",
+  ]);
   const [tasksLoading, setTasksLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
 
@@ -178,7 +183,6 @@ export const Home = () => {
 
   return (
     <div>
-      {categories.join(", ")}
       <div className="mb-[32px] mx-[32px] container">
         <Header />
         <div className="md:grid md:grid-cols-4 md:gap-[32px]">
