@@ -1,13 +1,12 @@
 import { Button } from "semantic-ui-react";
+import React from "react"
 
-export const LogOutButton = () => {
+export const ButtonComponent = ({value}) => {
   return (
     <>
-      <div className="flex justify-end">
         <Button style={{ backgroundColor: "#005BAB", color: "white" }}>
-          Log Out
+          {value}
         </Button>
-      </div>
     </>
   );
 };
