@@ -57,13 +57,7 @@ const samplePosts = [
         question_id: 103,
         question_text: "Sample question for post 2?",
         created_at: "2023-08-01 09:12:40",
-        reply_list: [
-          {
-            reply_id: 204,
-            reply_text: "Sample reply to question for post 2.",
-            created_at: "2023-08-01 09:13:15",
-          },
-        ],
+        reply_list: [],
       },
     ],
   },

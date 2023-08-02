@@ -10,7 +10,6 @@ export const PostCard = (props) => {
       <Card.Content>
         <Comment.Group>
           <Comment>
-            {/* <Comment.Avatar src="/images/avatar/small/matt.jpg" /> */}
             <Comment.Content>
               <Comment.Author as="a">{post.user_name}</Comment.Author>
               <Comment.Metadata>
@@ -49,7 +48,6 @@ export const PostCard = (props) => {
             <Comment.Group>
               {post.question_list.map((question) => (
                 <Comment key={question.id}>
-                  {/* <Comment.Avatar src="/images/avatar/small/elliot.jpg" /> */}
                   <Comment.Content>
                     <Comment.Author as="a">社員の人</Comment.Author>
                     <Comment.Metadata>
@@ -58,26 +56,30 @@ export const PostCard = (props) => {
                     <Comment.Text>
                       <p>{question.question_text}</p>
                     </Comment.Text>
-                    <Comment.Actions>
-                      <Comment.Action>Reply</Comment.Action>
-                    </Comment.Actions>
+                    {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
+                      <ReplyForm />
+                    )}
                   </Comment.Content>
                   <Comment.Group>
-                    {question.reply_list.map((reply) => (
-                      <Comment>
-                        {/* <Comment.Avatar src="/images/avatar/small/jenny.jpg" /> */}
-                        <Comment.Content>
-                          <Comment.Author as="a">社員の人</Comment.Author>
-                          <Comment.Metadata>
-                            <div>{reply.created_at}</div>
-                          </Comment.Metadata>
-                          <Comment.Text>{reply.reply_text}</Comment.Text>
-                          <Comment.Actions>
-                            <Comment.Action>Reply</Comment.Action>
-                          </Comment.Actions>
-                        </Comment.Content>
-                      </Comment>
-                    ))}
+                    {question.reply_list.map(
+                      (
+                        reply,
+                        i // 質問に対する返信
+                      ) => (
+                        <Comment key={reply.id}>
+                          <Comment.Content>
+                            <Comment.Author as="a">社員の人</Comment.Author>
+                            <Comment.Metadata>
+                              <div>{reply.created_at}</div>
+                            </Comment.Metadata>
+                            <Comment.Text>{reply.reply_text}</Comment.Text>
+                            {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
+                              <ReplyForm />
+                            )}
+                          </Comment.Content>
+                        </Comment>
+                      )
+                    )}
                   </Comment.Group>
                 </Comment>
               ))}
@@ -96,5 +98,29 @@ export const PostCard = (props) => {
         )}
       </Card.Content>
     </Card>
+  );
+};
+
+const ReplyForm = () => {
+  const [inputFormOpen, setInputFormOpen] = useState(false);
+  return (
+    <>
+      {inputFormOpen ? (
+        <Form reply className="my-3">
+          <Input type="text" placeholder="Search..." action size="mini" fluid>
+            <input placeholder="返信内容を入力してください" />
+            <Button type="submit" size="mini" primary>
+              返信する
+            </Button>
+          </Input>
+        </Form>
+      ) : (
+        <Comment.Actions>
+          <Comment.Action onClick={() => setInputFormOpen(true)}>
+            返信する
+          </Comment.Action>
+        </Comment.Actions>
+      )}
+    </>
   );
 };
