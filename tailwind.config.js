@@ -7,7 +7,11 @@ module.exports = {
       'white' : '#FFF',
       'gray' : '#D6D5D5',
     },
-    extend: {},
+    extend: {
+      backgroundImage: (theme) => ({
+        'imagemd': "url('/src/images/image-md.png')",
+      }),
+    },
   },
   plugins: [],
 };
