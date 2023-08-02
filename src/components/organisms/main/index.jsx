@@ -6,8 +6,9 @@ export const Main = (props) => {
   return (
     <div className="pb-[24px]">
       <div className="flex justify-between">
-        <h2 className="pt-1 mb-0">全カテゴリー</h2>
-        <Input icon="search" placeholder="Search..." />
+        <div className="pt-1 mb-0 hidden md:block text-2xl">全カテゴリー</div>
+        <div className="text-lg block md:hidden">全カテゴリー</div>
+        <Input icon="search" placeholder="Search..." className="" />
       </div>
       {posts.map((post) => (
         <PostCard key={post.id} post={post} />
