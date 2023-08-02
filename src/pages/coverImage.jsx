@@ -1,25 +1,37 @@
 import letters from "../images/letters.png";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./coverImage.css";
 
 export const CoverImage = () => {
-  const [fadeout, setFadeout] = useState(false);
+  const [isShowing, setIsShowing] = useState(true);
+  const [fadeOutComplete, setFadeOutComplete] = useState(false);
+	useEffect(() => {
+    const timer1 = setTimeout(() => {
+      setFadeOutComplete(true);
+    }, 3000);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setFadeout(true);
-    }, 0);
-    return () => clearTimeout(timer);
+    const timer2 = setTimeout(() => {
+      setIsShowing(false);
+    }, 3500);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, []);
 
   return (
-    <>
-      <div
-        className="h-screen w-screen bg-black flex justify-center items-center p-[16px] relative"
-      >
-        <img className="absolute inset-0 m-auto" src={letters} alt="" />
+    <div className={`absolute inset-0 z-20 ${fadeOutComplete ? "hidden" : ""}`}>
+      <div className={`relative h-full w-screen`}>
+        <div
+          className={`absolute inset-0 bg-black ${
+            isShowing ? "animate-fadeout" : ""
+          }`}
+        ></div>
+        <div className="absolute inset-0 h-screen mx-[24px]">
+          <img className="absolute m-auto inset-0" src={letters} alt="" />
+        </div>
       </div>
-			<div></div>
-    </>
+    </div>
   );
 };

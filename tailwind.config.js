@@ -8,7 +8,18 @@ module.exports = {
       'gray' : '#D6D5D5',
       'black' : '#000',
     },
-    extend: {},
+    extend: {
+      keyframes: {
+        fadeout: {
+          '0%': { opacity: 1 },
+          '30%': {opacity: 1 },
+          '100%': { opacity: 0 },
+        }
+      },
+      animation: {
+        fadeout: 'fadeout 3s ease-out',
+      }
+    },
   },
   plugins: [],
 };
