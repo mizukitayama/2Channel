@@ -28,11 +28,7 @@ export const Main = (props) => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between">
-            <div className="pt-1 mb-0 hidden md:block text-2xl">
-              全カテゴリー
-            </div>
-            <div className="text-lg block md:hidden">全カテゴリー</div>
+          <div className="flex justify-end">
             <Input
               icon="search"
               placeholder="Search..."
