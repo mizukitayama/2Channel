@@ -16,7 +16,7 @@ export const CoverImage = () => {
 
   return (
     <div className={`absolute inset-0 z-20 ${fadeOutComplete ? "hidden" : ""}`}>
-      <div className={`relative h-full w-screen`}>
+      <div className={`relative h-full min-h-screen w-screen`}>
         <div
           className={`absolute inset-0 bg-black animate-fadeout`}
         ></div>
