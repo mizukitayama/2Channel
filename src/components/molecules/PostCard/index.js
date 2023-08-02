@@ -43,8 +43,8 @@ export const PostCard = (props) => {
           <div className="text-right">
             {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}
             <a className="select-none" onClick={() => setInputFormOpen(true)}>
-              質問する
               <Icon name="talk" />
+              質問する
             </a>
           </div>
         )}

@@ -180,7 +180,6 @@ export const Home = () => {
   return (
     <>
       <div>
-        {categories.join(", ")}
         <div className="mb-[32px] mx-[32px] container">
           <Header />
           <div className="md:grid md:grid-cols-4 md:gap-[32px]">
