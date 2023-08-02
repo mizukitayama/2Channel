@@ -128,6 +128,8 @@ const samplePosts = [
 export const Home = () => {
   const [posts, setPosts] = useState(samplePosts);
   const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
+  const [tasksLoading, setTasksLoading] = useState(false);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
 
   const fetchPosts = () => {
     const postApi = new PostApi();
@@ -170,7 +172,7 @@ export const Home = () => {
 
   useEffect(() => {
     // TODO: バックエンドと通信できるようになったら有効にする
-    // fetchPosts();
+    fetchPosts();
     // fetchCategories();
   }, []);
 
@@ -187,7 +189,7 @@ export const Home = () => {
             />
           </div>
           <div className="md:col-span-3">
-            <Main posts={posts} />
+            <Main posts={posts} loading={tasksLoading} />
           </div>
         </div>
       </div>

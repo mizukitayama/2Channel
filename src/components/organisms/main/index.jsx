@@ -1,10 +1,10 @@
 import { useState } from "react";
 
-import { Input } from "semantic-ui-react";
+import { Input, Dimmer, Loader, Segment } from "semantic-ui-react";
 import { PostCard } from "../../molecules/PostCard";
 
 export const Main = (props) => {
-  const { posts } = props;
+  const { posts, loading = false } = props;
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearchInputChange = (e) => {
@@ -20,19 +20,31 @@ export const Main = (props) => {
 
   return (
     <div className="pb-[24px]">
-      <div className="flex justify-between">
-        <div className="pt-1 mb-0 hidden md:block text-2xl">全カテゴリー</div>
-        <div className="text-lg block md:hidden">全カテゴリー</div>
-        <Input
-          icon="search"
-          placeholder="Search..."
-          value={searchValue}
-          onChange={handleSearchInputChange}
-        />
-      </div>
-      {searchHitPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
+      {loading ? (
+        <div className="text-center">
+          <Loader active inline="centered">
+            読み込み中
+          </Loader>
+        </div>
+      ) : (
+        <>
+          <div className="flex justify-between">
+            <div className="pt-1 mb-0 hidden md:block text-2xl">
+              全カテゴリー
+            </div>
+            <div className="text-lg block md:hidden">全カテゴリー</div>
+            <Input
+              icon="search"
+              placeholder="Search..."
+              value={searchValue}
+              onChange={handleSearchInputChange}
+            />
+          </div>
+          {searchHitPosts.map((post) => (
+            <PostCard key={post.id} post={post} />
+          ))}
+        </>
+      )}
     </div>
   );
 };

@@ -8,11 +8,10 @@ export const PostCard = (props) => {
 
   const getDateLabel = (date) => {
     const dateObj = new Date(date);
-    dateObj.setHours(dateObj.getHours() + 9); // 日本時間に変換
     const year = dateObj.getFullYear();
     const month = dateObj.getMonth() + 1;
     const day = dateObj.getDate();
-    const hour = (dateObj.getHours() + 9) % 24;
+    const hour = dateObj.getHours();
     const minute = ("00" + dateObj.getMinutes()).slice(-2);
     return `${year}/${month}/${day} ${hour}:${minute}`;
   };
