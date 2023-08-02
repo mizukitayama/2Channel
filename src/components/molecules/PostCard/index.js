@@ -5,6 +5,19 @@ export const PostCard = (props) => {
   const { post } = props;
   const [chatLogOpen, setChatLogOpen] = useState(false);
   const [inputFormOpen, setInputFormOpen] = useState(false);
+
+  // 2023-08-02T-2:37:49.079049+00:00を2023/08/02 11:37に変換する
+  const getDateLabel = (date) => {
+    const dateObj = new Date(date);
+    dateObj.setHours(dateObj.getHours() + 9); // 日本時間に変換
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth() + 1;
+    const day = dateObj.getDate();
+    const hour = (dateObj.getHours() + 9) % 24;
+    const minute = ("00" + dateObj.getMinutes()).slice(-2);
+    return `${year}/${month}/${day} ${hour}:${minute}`;
+  };
+
   return (
     <Card fluid>
       <Card.Content>
@@ -13,7 +26,7 @@ export const PostCard = (props) => {
             <Comment.Content>
               <Comment.Author as="a">{post.user_name}</Comment.Author>
               <Comment.Metadata>
-                <div>{post.created_at}</div>
+                <div>{getDateLabel(post.created_at)}</div>
               </Comment.Metadata>
               <Comment.Text>{post.post_text}</Comment.Text>
             </Comment.Content>
@@ -51,7 +64,7 @@ export const PostCard = (props) => {
                   <Comment.Content>
                     <Comment.Author as="a">社員の人</Comment.Author>
                     <Comment.Metadata>
-                      <div>{question.created_at}</div>
+                      <div>{getDateLabel(question.created_at)}</div>
                     </Comment.Metadata>
                     <Comment.Text>
                       <p>{question.question_text}</p>
@@ -70,7 +83,7 @@ export const PostCard = (props) => {
                           <Comment.Content>
                             <Comment.Author as="a">社員の人</Comment.Author>
                             <Comment.Metadata>
-                              <div>{reply.created_at}</div>
+                              <div>{getDateLabel(reply.created_at)}</div>
                             </Comment.Metadata>
                             <Comment.Text>{reply.reply_text}</Comment.Text>
                             {i === question.reply_list.length - 1 && ( // 末尾にのみ表示

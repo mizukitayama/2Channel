@@ -8,7 +8,7 @@ export class PostApi {
 
   async getPosts(queries) {
     const query = new URLSearchParams(queries);
-    return await this.apiClient.get(POSTS.GET + query ? `?${query}` : "");
+    return await this.apiClient.get(POSTS.GET + (query ? `?${query}` : ""));
   }
 
   async postQuestion(postId, params) {
