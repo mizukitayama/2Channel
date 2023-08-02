@@ -6,7 +6,6 @@ export const PostCard = (props) => {
   const [chatLogOpen, setChatLogOpen] = useState(false);
   const [inputFormOpen, setInputFormOpen] = useState(false);
 
-  // 2023-08-02T-2:37:49.079049+00:00を2023/08/02 11:37に変換する
   const getDateLabel = (date) => {
     const dateObj = new Date(date);
     dateObj.setHours(dateObj.getHours() + 9); // 日本時間に変換

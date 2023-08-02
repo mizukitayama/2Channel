@@ -8,10 +8,10 @@ export const Category = (props) => {
         className="my-[16px] py-[16px] border rounded-md border-gray cursor-pointer hover:bg-gray-100"
         onClick={onClick}
       >
-        <Label circular color={"blue"}>
+        <Label circular color="blue">
           3
-        </Label>{" "}
-        {category}
+        </Label>
+        <span className="ml-1">{category}</span>
       </div>
     </>
   );

@@ -150,6 +150,16 @@ export const Home = () => {
   };
 
   useEffect(() => {
+    const postApi = new PostApi();
+    postApi
+      .getPosts()
+      .then((res) => {
+        setPosts(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     const categoryApi = new CategoryApi();
     categoryApi
       .getCategories()
