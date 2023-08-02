@@ -31,9 +31,6 @@ export const Login = () => {
 
   return (
     <>
-      {isFetching ? (
-        <div className="bg-imagemd bg-center h-screen"></div>
-      ) : (
         <Container text>
           <div className="m-[48px]">
             <div className="border border-gray rounded-md p-[48px] col-3 bg-white">
@@ -71,7 +68,6 @@ export const Login = () => {
             </div>
           </div>
         </Container>
-      )}
     </>
   );
 };

@@ -6,12 +6,9 @@ module.exports = {
       'blue' : '#005AB5',
       'white' : '#FFF',
       'gray' : '#D6D5D5',
+      'black' : '#000',
     },
-    extend: {
-      backgroundImage: (theme) => ({
-        'imagemd': "url('/src/images/image-md.png')",
-      }),
-    },
+    extend: {},
   },
   plugins: [],
 };
