@@ -9,15 +9,18 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 export default function App() {
   return (
     <div className="App">
+      <div className="relative">
+
       <Router>
         <div>
           <Routes>
-            <Route exact path="/" element={<Home />} />
+            <Route exact path="/" element={<Home />} classname="absolute inset-0"/>
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
       </Router>
       <CoverImage />
+      </div>
     </div>
   );
 }
