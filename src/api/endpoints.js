@@ -5,8 +5,13 @@ export const POSTS = {
     QUESTIONS: {
       POST: "/posts/<post_id>/questions/",
       SINGLE: {
+        DELETE: "/posts/<post_id>/questions/<question_id>/",
         REPLIES: {
           POST: "/posts/<post_id>/questions/<question_id>/replies/",
+          SINGLE: {
+            DELETE:
+              "/posts/<post_id>/questions/<question_id>/replies/<reply_id>/",
+          },
         },
       },
     },

@@ -13,6 +13,15 @@ import {
 import { PostApi } from "../../../api/PostApi";
 import { UpdatePosts } from "../../../pages/home";
 
+const getDateLabel = (date) => {
+  const dateObj = new Date(date);
+  const year = dateObj.getFullYear();
+  const month = dateObj.getMonth() + 1;
+  const day = dateObj.getDate();
+  const hour = dateObj.getHours();
+  const minute = ("00" + dateObj.getMinutes()).slice(-2);
+  return `${year}/${month}/${day} ${hour}:${minute}`;
+};
 export const PostCard = (props) => {
   const { post } = props;
   const [chatLogOpen, setChatLogOpen] = useState(false);
@@ -28,16 +37,6 @@ export const PostCard = (props) => {
       setError(false);
     }
     setQuestion(str);
-  };
-
-  const getDateLabel = (date) => {
-    const dateObj = new Date(date);
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth() + 1;
-    const day = dateObj.getDate();
-    const hour = dateObj.getHours();
-    const minute = ("00" + dateObj.getMinutes()).slice(-2);
-    return `${year}/${month}/${day} ${hour}:${minute}`;
   };
 
   // const { posts, setPosts } = useContext(UpdatePosts);
@@ -74,6 +73,7 @@ export const PostCard = (props) => {
       })
       .catch((err) => {
         console.log(err);
+        window.alert("投稿の削除に失敗しました。");
       })
       .finally(() => {
         setDelPostLoading(false);
@@ -166,53 +166,7 @@ export const PostCard = (props) => {
             </div>
             <Comment.Group>
               {post.question_list.map((question) => (
-                <Comment>
-                  <Comment.Avatar src={question.user_image_url} />
-                  <Comment.Content>
-                    <Comment.Author as="a">{question.user_name}</Comment.Author>
-                    <Comment.Metadata>
-                      <div>{getDateLabel(question.created_at)}</div>
-                    </Comment.Metadata>
-                    <Comment.Text>
-                      <p className="whitespace-pre">{question.text}</p>
-                    </Comment.Text>
-                    {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
-                      <ReplyForm
-                        postId={post.post_id}
-                        questionId={question.question_id}
-                      />
-                    )}
-                  </Comment.Content>
-                  <Comment.Group>
-                    {question.reply_list.map(
-                      (
-                        reply,
-                        i // 質問に対する返信
-                      ) => (
-                        <Comment>
-                          <Comment.Avatar src={reply.user_image_url} />
-                          <Comment.Content>
-                            <Comment.Author as="a">
-                              {reply.user_name}
-                            </Comment.Author>
-                            <Comment.Metadata>
-                              <div>{getDateLabel(reply.created_at)}</div>
-                            </Comment.Metadata>
-                            <Comment.Text>
-                              <div className="whitespace-pre">{reply.text}</div>
-                            </Comment.Text>
-                            {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
-                              <ReplyForm
-                                postId={post.post_id}
-                                questionId={question.question_id}
-                              />
-                            )}
-                          </Comment.Content>
-                        </Comment>
-                      )
-                    )}
-                  </Comment.Group>
-                </Comment>
+                <Question question={question} post={post} />
               ))}
             </Comment.Group>
           </>
@@ -229,6 +183,96 @@ export const PostCard = (props) => {
         )}
       </Card.Content>
     </Card>
+  );
+};
+
+const Question = ({ question, post }) => {
+  const [loading, setLoading] = useState(false);
+  const { fetchPosts } = useContext(UpdatePosts);
+  const handleDeleteQuestion = (postId, questionId) => {
+    if (!window.confirm("質問を削除してもよろしいですか？")) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    postApi
+      .deleteQuestion(postId, questionId)
+      .then((res) => {
+        fetchPosts();
+        window.alert("質問を削除しました。");
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert("質問の削除に失敗しました。");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const user_id = localStorage.getItem("GMO2ch.user_id")
+    ? localStorage.getItem("GMO2ch.user_id")
+    : "";
+
+  return (
+    <>
+      <Comment>
+        <Dimmer active={loading} inverted />
+        <Comment.Avatar src={question.user_image_url} />
+        <Comment.Content>
+          <Comment.Author as="a">{question.user_name}</Comment.Author>
+          <Comment.Metadata>
+            <div>{getDateLabel(question.created_at)}</div>
+          </Comment.Metadata>
+          {question.user_id === user_id && (
+            <div className="float-right">
+              <Icon
+                name="trash"
+                link
+                color="grey"
+                onClick={() =>
+                  handleDeleteQuestion(post.post_id, question.question_id)
+                }
+              />
+            </div>
+          )}
+          <Comment.Text>
+            <p className="whitespace-pre">{question.text}</p>
+          </Comment.Text>
+          {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
+            <ReplyForm
+              postId={post.post_id}
+              questionId={question.question_id}
+            />
+          )}
+        </Comment.Content>
+        <Comment.Group>
+          {question.reply_list.map(
+            (
+              reply,
+              i // 質問に対する返信
+            ) => (
+              <Comment>
+                <Comment.Avatar src={reply.user_image_url} />
+                <Comment.Content>
+                  <Comment.Author as="a">{reply.user_name}</Comment.Author>
+                  <Comment.Metadata>
+                    <div>{getDateLabel(reply.created_at)}</div>
+                  </Comment.Metadata>
+                  <Comment.Text>
+                    <div className="whitespace-pre">{reply.text}</div>
+                  </Comment.Text>
+                  {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
+                    <ReplyForm
+                      postId={post.post_id}
+                      questionId={question.question_id}
+                    />
+                  )}
+                </Comment.Content>
+              </Comment>
+            )
+          )}
+        </Comment.Group>
+      </Comment>
+    </>
   );
 };
 
