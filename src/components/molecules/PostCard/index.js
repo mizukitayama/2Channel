@@ -63,6 +63,7 @@ export const PostCard = (props) => {
       <Card.Content>
         <Comment.Group>
           <Comment>
+            <Comment.Avatar src={post.user_image_url} />
             <Comment.Content>
               <Comment.Author as="a">{post.user_name}</Comment.Author>
               <Comment.Metadata>
@@ -118,8 +119,9 @@ export const PostCard = (props) => {
             <Comment.Group>
               {post.question_list.map((question) => (
                 <Comment>
+                  <Comment.Avatar src={question.user_image_url} />
                   <Comment.Content>
-                    <Comment.Author as="a">社員の人</Comment.Author>
+                    <Comment.Author as="a">{question.user_name}</Comment.Author>
                     <Comment.Metadata>
                       <div>{getDateLabel(question.created_at)}</div>
                     </Comment.Metadata>
@@ -140,8 +142,11 @@ export const PostCard = (props) => {
                         i // 質問に対する返信
                       ) => (
                         <Comment>
+                          <Comment.Avatar src={reply.user_image_url} />
                           <Comment.Content>
-                            <Comment.Author as="a">社員の人</Comment.Author>
+                            <Comment.Author as="a">
+                              {reply.user_name}
+                            </Comment.Author>
                             <Comment.Metadata>
                               <div>{getDateLabel(reply.created_at)}</div>
                             </Comment.Metadata>
@@ -205,8 +210,8 @@ const ReplyForm = ({ postId, questionId }) => {
 
     const postApi = new PostApi();
     postApi
-    .postReply(postId, questionId, params)
-    .then((res) => {
+      .postReply(postId, questionId, params)
+      .then((res) => {
         fetchPosts();
       })
       .catch((err) => {

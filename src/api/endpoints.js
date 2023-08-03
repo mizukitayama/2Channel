@@ -12,12 +12,17 @@ export const POSTS = {
   },
   CATEGORIES: {
     GET: "/posts/categories/",
+};
+
+export const CATEGORIES = {
+  REGISTER: {
+    POST: "/posts/categories/",
   },
 };
 
 export const ACCOUNTS = {
   REGISTER: {
-    POST: "/accounts/register",
+    POST: "/accounts/register/",
   },
   LOGIN: {
     POST: "/accounts/login/",
