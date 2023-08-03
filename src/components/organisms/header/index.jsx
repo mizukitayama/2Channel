@@ -1,4 +1,3 @@
-import { ButtonComponent } from "../../atoms/ButtonComponent";
 import { Logo } from "../../molecules/Logo";
 import { useNavigate } from "react-router-dom";
 import { Icon, Dropdown } from "semantic-ui-react";
@@ -42,6 +41,7 @@ export const Header = () => {
         </div>
         <div className="grid gap-[8px]">
           <Dropdown
+          openOnFocus
             trigger={trigger}
             options={options}
             onChange={(event, data) => handleOptionClick(data.value)}

@@ -1,5 +1,13 @@
 import { useState, useEffect, useContext } from "react";
-import { Comment, Form, Button, Card, Icon, Input, Message } from "semantic-ui-react";
+import {
+  Comment,
+  Form,
+  Button,
+  Card,
+  Icon,
+  Input,
+  Message,
+} from "semantic-ui-react";
 import { PostApi } from "../../../api/PostApi";
 import { UpdatePosts } from "../../../pages/home";
 
@@ -8,16 +16,16 @@ export const PostCard = (props) => {
   const [chatLogOpen, setChatLogOpen] = useState(false);
   const [inputFormOpen, setInputFormOpen] = useState(false);
   const [question, setQuestion] = useState("");
-  const [error, setError] = useState(false)
+  const [error, setError] = useState(false);
 
   const onQuestionChange = (str) => {
     if (str.length >= 100) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
-    setQuestion(str)
-  }
+    setQuestion(str);
+  };
 
   const getDateLabel = (date) => {
     const dateObj = new Date(date);
@@ -33,7 +41,7 @@ export const PostCard = (props) => {
   const { fetchPosts } = useContext(UpdatePosts);
   const postQuestion = () => {
     if (question.length >= 100 || question.length <= 0) {
-      return
+      return;
     }
     const params = new URLSearchParams();
     params.append("text", question);
@@ -42,6 +50,8 @@ export const PostCard = (props) => {
       .postQuestion(post.post_id, params)
       .then((res) => {
         setQuestion("");
+        setChatLogOpen(true);
+        setInputFormOpen(false);
         fetchPosts();
       })
       .catch((err) => {
@@ -74,7 +84,11 @@ export const PostCard = (props) => {
                 質問する
               </Button>
             </Input>
-            {error && <Message color='red'>だめです。100字未満で入力してください。</Message>}
+            {error && (
+              <Message color="red">
+                だめです。100字未満で入力してください。
+              </Message>
+            )}
           </Form>
         ) : (
           <div className="text-right">
@@ -162,9 +176,9 @@ const ReplyForm = ({ postId, questionId }) => {
 
   const onReplyChange = (str) => {
     if (str.length >= 100) {
-      setError(true)
+      setError(true);
     } else {
-      setError(false)
+      setError(false);
     }
     setReply(str);
   };
@@ -172,14 +186,16 @@ const ReplyForm = ({ postId, questionId }) => {
   const { fetchPosts } = useContext(UpdatePosts);
   const postReply = () => {
     if (reply.length >= 100 || reply.length <= 0) {
-      return
+      return;
     }
     const params = new URLSearchParams();
     params.append("text", reply);
+
+    
     const postApi = new PostApi();
     postApi
-      .postReply(postId, questionId, params)
-      .then((res) => {
+    .postReply(postId, questionId, params)
+    .then((res) => {
         setReply("");
         fetchPosts();
       })
@@ -191,7 +207,7 @@ const ReplyForm = ({ postId, questionId }) => {
   return (
     <>
       {inputFormOpen ? (
-        <Form reply className="my-3" onSubmit={postReply}>
+        <Form reply className="my-3">
           <Input type="text" placeholder="Search..." action size="mini" fluid>
             <input
               placeholder="返信内容を入力してください"
@@ -202,7 +218,11 @@ const ReplyForm = ({ postId, questionId }) => {
               返信する
             </Button>
           </Input>
-          {error && <Message color='red'>だめです。100字未満で入力してください。</Message>}
+          {error && (
+            <Message color="red">
+              だめです。100字未満で入力してください。
+            </Message>
+          )}
         </Form>
       ) : (
         <Comment.Actions>
