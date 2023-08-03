@@ -1,10 +1,12 @@
 export const POSTS = {
   GET: "/posts/",
   SINGLE: {
+    PUT: "/posts/<post_id>/",
     DELETE: "/posts/<post_id>/",
     QUESTIONS: {
       POST: "/posts/<post_id>/questions/",
       SINGLE: {
+        PUT: "/posts/<post_id>/questions/<question_id>/",
         DELETE: "/posts/<post_id>/questions/<question_id>/",
         REPLIES: {
           POST: "/posts/<post_id>/questions/<question_id>/replies/",

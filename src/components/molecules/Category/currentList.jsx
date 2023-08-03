@@ -59,7 +59,7 @@ export const CategoryCurrentList = ({ categories }) => {
                 <Table.Row>
                   <Table.Cell>
                   <div onClick={() => deleteCategories(category)}>
-                    <Icon name="delete" size="small" color="red"/>  {categories[category].category_name}
+                    <Icon name="trash" size="small" />  {categories[category].category_name}
                     </div>
                     </Table.Cell>
                   <Table.Cell>{postCounts[category] ? postCounts[category] : 0}</Table.Cell>

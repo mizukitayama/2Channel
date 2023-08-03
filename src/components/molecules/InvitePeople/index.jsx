@@ -11,7 +11,7 @@ export const InvitePeople = () => {
     const authApi = new AuthApi();
     setIsLoading(true);
     authApi
-      .register("xoxb-5664527184981-5680144281921-Egy8kEhXvUYYO23UN4LXYJ7g")
+      .register("xoxb-5664527184981-5680144281921-ALb4qCfw0ivLFDM0KvJHGnE5")
       .then((res) => {
         setIsLoading(false);
         setIsUsersAddModalOpen(false);

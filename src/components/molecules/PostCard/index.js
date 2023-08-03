@@ -29,6 +29,8 @@ export const PostCard = (props) => {
   const [question, setQuestion] = useState("");
   const [error, setError] = useState(false);
   const [delPostLoading, setDelPostLoading] = useState(false);
+  const [editPost, setEditPost] = useState(false);
+  const [editingText, setEditingText] = useState("");
 
   const onQuestionChange = (str) => {
     if (str.length >= 100) {
@@ -37,6 +39,15 @@ export const PostCard = (props) => {
       setError(false);
     }
     setQuestion(str);
+  };
+
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
   };
 
   // const { posts, setPosts } = useContext(UpdatePosts);
@@ -61,6 +72,22 @@ export const PostCard = (props) => {
       });
   };
 
+  const putEditedPost = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) {
+      return
+    }
+    const params = new URLSearchParams()
+    params.append("text", editingText)
+    const postApi = new PostApi();
+    postApi.putPost(post.post_id, params)
+    .then((res) => {
+      setEditPost(!editPost)
+      fetchPosts()
+    }).catch((err) => {
+      console.log(err)
+    })
+  };
+
   const handleDeletePost = (postId) => {
     if (!window.confirm("投稿を削除してもよろしいですか？")) return;
     setDelPostLoading(true);
@@ -78,6 +105,11 @@ export const PostCard = (props) => {
       .finally(() => {
         setDelPostLoading(false);
       });
+  };
+
+  const handleEditPost = (postId, text) => {
+    setEditPost(!editPost);
+    setEditingText(text);
   };
 
   const user_id = localStorage.getItem("GMO2ch.user_id")
@@ -109,6 +141,13 @@ export const PostCard = (props) => {
               {post.user_id === user_id && (
                 <div className="float-right">
                   <Icon
+                    name="edit"
+                    link
+                    onClick={() => handleEditPost(post.post_id, post.post_text)}
+                    loading={delPostLoading}
+                    color="grey"
+                  />
+                  <Icon
                     name="trash"
                     link
                     onClick={() => handleDeletePost(post.post_id)}
@@ -117,12 +156,43 @@ export const PostCard = (props) => {
                   />
                 </div>
               )}
-              <Comment.Text>
-                <div className="whitespace-pre">{post.post_text}</div>
-              </Comment.Text>
+              {editPost ? (
+                <></>
+              ) : (
+                <Comment.Text>
+                  <div className="whitespace-pre">{post.post_text}</div>
+                </Comment.Text>
+              )}
             </Comment.Content>
           </Comment>
         </Comment.Group>
+        {editPost ? (
+          <Form reply className="m-[16px] ml-[48px]">
+            <Input type="text" placeholder="Search..." action size="mini" fluid>
+              <textarea
+                rows={1}
+                placeholder="投稿を編集する"
+                value={editingText}
+                onChange={(event) => onEditingTextChange(event.target.value)}
+                style={{
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                  resize: "none",
+                }}
+              />
+              <Button type="submit" size="mini" primary onClick={putEditedPost}>
+                更新
+              </Button>
+            </Input>
+            {error && (
+              <Message color="red">
+                だめです。100字未満で入力してください。
+              </Message>
+            )}
+          </Form>
+        ) : (
+          <></>
+        )}
         {inputFormOpen ? (
           <Form reply className="my-3">
             <Input type="text" placeholder="Search..." action size="mini" fluid>
