@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { Comment, Form, Button, Card, Icon, Input } from "semantic-ui-react";
+import { Comment, Form, Button, Card, Icon, Input, Message } from "semantic-ui-react";
 import { PostApi } from "../../../api/PostApi";
 import { UpdatePosts } from "../../../pages/home";
 
@@ -8,6 +8,16 @@ export const PostCard = (props) => {
   const [chatLogOpen, setChatLogOpen] = useState(false);
   const [inputFormOpen, setInputFormOpen] = useState(false);
   const [question, setQuestion] = useState("");
+  const [error, setError] = useState(false)
+
+  const onQuestionChange = (str) => {
+    if (str.length >= 100) {
+      setError(true)
+    } else {
+      setError(false)
+    }
+    setQuestion(str)
+  }
 
   const getDateLabel = (date) => {
     const dateObj = new Date(date);
@@ -22,6 +32,9 @@ export const PostCard = (props) => {
   // const { posts, setPosts } = useContext(UpdatePosts);
   const { fetchPosts } = useContext(UpdatePosts);
   const postQuestion = () => {
+    if (question.length >= 100 || question.length <= 0) {
+      return
+    }
     const params = new URLSearchParams();
     params.append("text", question);
     const postApi = new PostApi();
@@ -55,12 +68,13 @@ export const PostCard = (props) => {
               <input
                 placeholder="質問内容を入力してください"
                 value={question}
-                onChange={(event) => setQuestion(event.target.value)}
+                onChange={(event) => onQuestionChange(event.target.value)}
               />
               <Button type="submit" size="mini" primary onClick={postQuestion}>
                 質問する
               </Button>
             </Input>
+            {error && <Message color='red'>だめです。100字未満で入力してください。</Message>}
           </Form>
         ) : (
           <div className="text-right">
@@ -144,17 +158,22 @@ export const PostCard = (props) => {
 const ReplyForm = ({ postId, questionId }) => {
   const [inputFormOpen, setInputFormOpen] = useState(false);
   const [reply, setReply] = useState("");
+  const [error, setError] = useState(false);
 
   const onReplyChange = (str) => {
     if (str.length >= 100) {
-      console.log("100");
-      return;
+      setError(true)
+    } else {
+      setError(false)
     }
     setReply(str);
   };
 
   const { fetchPosts } = useContext(UpdatePosts);
   const postReply = () => {
+    if (reply.length >= 100 || reply.length <= 0) {
+      return
+    }
     const params = new URLSearchParams();
     params.append("text", reply);
     const postApi = new PostApi();
@@ -183,6 +202,7 @@ const ReplyForm = ({ postId, questionId }) => {
               返信する
             </Button>
           </Input>
+          {error && <Message color='red'>だめです。100字未満で入力してください。</Message>}
         </Form>
       ) : (
         <Comment.Actions>
