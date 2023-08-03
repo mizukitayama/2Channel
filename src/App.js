@@ -5,13 +5,14 @@ import { Login } from "./pages/login";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AdminPage } from "./pages/adminPage.jsx";
+import { AuthCheck } from "./pages/authCheck.jsx";
 
 export default function App() {
   return (
     <div className="App">
       <div className="relative">
         <Router>
-          <div>
+          <AuthCheck>
             <Routes>
               <Route
                 exact
@@ -26,7 +27,7 @@ export default function App() {
                 className="absolute inset-0"
               />
             </Routes>
-          </div>
+          </AuthCheck>
         </Router>
       </div>
     </div>

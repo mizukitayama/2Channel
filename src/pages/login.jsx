@@ -3,16 +3,36 @@ import React, { useState } from "react";
 import { Container, Form } from "semantic-ui-react";
 import { ButtonComponentWithFunction } from "../components/atoms/ButtonComponentWithFunction";
 import { useNavigate } from "react-router-dom";
+import { Auth } from "../auth/auth";
 
 export const Login = () => {
-  const navigate = useNavigate();
-  const [isFetching, setIsFetching] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [workspaceId, setWorkspaceId] = useState("");
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   const onLogin = () => {
-    navigate("/");
+    setLoading(true);
+    Auth.login(workspaceId, userId, password)
+      .then((res) => {
+        if (res.response && res.response.status !== 200) {
+          throw new Error("login failed");
+        }
+        Object.keys(res).forEach((key) => {
+          const newKey = "GMO2ch." + key;
+          localStorage.setItem(newKey, res[key]);
+        });
+        navigate("/");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("ログインに失敗しました。再度お試しください。");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleWorkspaceIdChange = (event) => {
@@ -32,10 +52,10 @@ export const Login = () => {
       <Container text>
         <div className="mt-[16px] m-[8px] md:m-[48px]">
           <div className="border border-gray rounded-md p-[48px] col-3 bg-white">
-            <img src={logo} className="h-[40px]" />
+            <img src={logo} alt="GMO 2ch" className="h-[40px]" />
             <hr className="border-blue" />
             <div className="mt-[32px]">
-              <Form>
+              <Form loading={loading}>
                 <Form.Field>
                   <label>ワークスペースのID</label>
                   <input

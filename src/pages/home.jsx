@@ -9,7 +9,12 @@ import { CoverImage } from "./coverImage";
 export const UpdatePosts = React.createContext({});
 export const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState(["サウナ", "食べ物", "テック"]);
+  const [categories, setCategories] = useState([
+    "sauna",
+    "food",
+    "tech",
+    "other",
+  ]);
   const [tasksLoading, setTasksLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
 
@@ -19,7 +24,7 @@ export const Home = () => {
       .getPosts()
       .then((res) => {
         setPosts(res);
-        console.log(res)
+        console.log(res);
       })
       .catch((err) => {
         console.log(err);
@@ -72,9 +77,9 @@ export const Home = () => {
               />
             </div>
             <div className="md:col-span-3">
-            <UpdatePosts.Provider value={{posts ,setPosts, fetchPosts}}>
-              <Main posts={posts} loading={tasksLoading} />
-            </UpdatePosts.Provider>
+              <UpdatePosts.Provider value={{ posts, setPosts, fetchPosts }}>
+                <Main posts={posts} loading={tasksLoading} />
+              </UpdatePosts.Provider>
             </div>
           </div>
         </div>

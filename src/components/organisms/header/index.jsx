@@ -2,6 +2,7 @@ import { ButtonComponent } from "../../atoms/ButtonComponent";
 import { Logo } from "../../molecules/Logo";
 import { useNavigate } from "react-router-dom";
 import { Icon, Dropdown } from "semantic-ui-react";
+import { Auth } from "../../../auth/auth";
 
 export const Header = () => {
   const navigate = useNavigate();
@@ -12,7 +13,7 @@ export const Header = () => {
   const handleOptionClick = (optionKey) => {
     switch (optionKey) {
       case "sign-out":
-        console.log("sign out clicked");
+        Auth.logout();
         break;
       case "settings":
         navigate("/admin");

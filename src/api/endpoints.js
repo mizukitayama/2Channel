@@ -15,3 +15,12 @@ export const POSTS = {
 export const CATEGORIES = {
   GET: "/categories/",
 };
+
+export const ACCOUNTS = {
+  REGISTER: {
+    POST: "/accounts/register",
+  },
+  LOGIN: {
+    POST: "/accounts/login/",
+  },
+};

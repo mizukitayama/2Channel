@@ -51,7 +51,7 @@ export const PostCard = (props) => {
         </Comment.Group>
         {inputFormOpen ? (
           <Form reply className="my-3">
-            <Input type="text" placeholder="Search..." action size="mini" fluid >
+            <Input type="text" placeholder="Search..." action size="mini" fluid>
               <input
                 placeholder="質問内容を入力してください"
                 value={question}
@@ -147,11 +147,11 @@ const ReplyForm = ({ postId, questionId }) => {
 
   const onReplyChange = (str) => {
     if (str.length >= 100) {
-      console.log("100")
-      return
+      console.log("100");
+      return;
     }
-    setReply(str)
-  }
+    setReply(str);
+  };
 
   const { fetchPosts } = useContext(UpdatePosts);
   const postReply = () => {
@@ -162,7 +162,7 @@ const ReplyForm = ({ postId, questionId }) => {
       .postReply(postId, questionId, params)
       .then((res) => {
         setReply("");
-        fetchPosts()
+        fetchPosts();
       })
       .catch((err) => {
         console.log(err);
@@ -172,7 +172,7 @@ const ReplyForm = ({ postId, questionId }) => {
   return (
     <>
       {inputFormOpen ? (
-        <Form reply className="my-3">
+        <Form reply className="my-3" onSubmit={postReply}>
           <Input type="text" placeholder="Search..." action size="mini" fluid>
             <input
               placeholder="返信内容を入力してください"
