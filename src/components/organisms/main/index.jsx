@@ -20,25 +20,32 @@ export const Main = (props) => {
 
   return (
     <div className="pb-[24px]">
+      <div className="flex justify-end">
+        <Input
+          icon="search"
+          placeholder="Search..."
+          value={searchValue}
+          onChange={handleSearchInputChange}
+        />
+      </div>
       {loading ? (
-        <div className="text-center">
+        <div className="text-center mt-10">
           <Loader active inline="centered">
             読み込み中
           </Loader>
         </div>
       ) : (
         <>
-          <div className="flex justify-end">
-            <Input
-              icon="search"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={handleSearchInputChange}
-            />
-          </div>
           {searchHitPosts.map((post) => (
             <PostCard post={post} />
           ))}
+          {searchHitPosts.length === 0 && (
+            <Segment placeholder>
+              <h3 className="text-center text-gray-300">
+                まだ投稿がありません 🐥
+              </h3>
+            </Segment>
+          )}
         </>
       )}
     </div>
