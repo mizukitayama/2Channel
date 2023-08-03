@@ -12,6 +12,7 @@ export const POSTS = {
   },
   CATEGORIES: {
     GET: "/posts/categories/",
+  },
 };
 
 export const CATEGORIES = {

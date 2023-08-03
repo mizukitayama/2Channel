@@ -1,5 +1,5 @@
 import ApiClient from "./ApiClient";
-import { POSTS } from "./endpoints";
+import { POSTS, CATEGORIES } from "./endpoints";
 
 export class CategoryApi {
   constructor() {
