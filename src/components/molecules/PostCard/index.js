@@ -250,27 +250,82 @@ const Question = ({ question, post }) => {
               reply,
               i // 質問に対する返信
             ) => (
-              <Comment>
-                <Comment.Avatar src={reply.user_image_url} />
-                <Comment.Content>
-                  <Comment.Author as="a">{reply.user_name}</Comment.Author>
-                  <Comment.Metadata>
-                    <div>{getDateLabel(reply.created_at)}</div>
-                  </Comment.Metadata>
-                  <Comment.Text>
-                    <div className="whitespace-pre">{reply.text}</div>
-                  </Comment.Text>
-                  {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
-                    <ReplyForm
-                      postId={post.post_id}
-                      questionId={question.question_id}
-                    />
-                  )}
-                </Comment.Content>
-              </Comment>
+              <Reply
+                reply={reply}
+                question={question}
+                post={post}
+                showReplyForm={i === question.reply_list.length - 1}
+              />
             )
           )}
         </Comment.Group>
+      </Comment>
+    </>
+  );
+};
+
+const Reply = ({ reply, question, post, showReplyForm }) => {
+  const [loading, setLoading] = useState(false);
+  const { fetchPosts } = useContext(UpdatePosts);
+  const handleDeleteReply = (postId, questionId, replyId) => {
+    if (!window.confirm("返信を削除してもよろしいですか？")) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    postApi
+      .deleteReply(postId, questionId, replyId)
+      .then((res) => {
+        fetchPosts();
+        window.alert("返信を削除しました。");
+      })
+      .catch((err) => {
+        console.log(err);
+        window.alert("返信の削除に失敗しました。");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const user_id = localStorage.getItem("GMO2ch.user_id")
+    ? localStorage.getItem("GMO2ch.user_id")
+    : "";
+
+  return (
+    <>
+      <Comment>
+        <Dimmer active={loading} inverted />
+        <Comment.Avatar src={reply.user_image_url} />
+        <Comment.Content>
+          <Comment.Author as="a">{reply.user_name}</Comment.Author>
+          <Comment.Metadata>
+            <div>{getDateLabel(reply.created_at)}</div>
+          </Comment.Metadata>
+          {reply.user_id === user_id && (
+            <div className="float-right">
+              <Icon
+                name="trash"
+                link
+                color="grey"
+                onClick={() =>
+                  handleDeleteReply(
+                    post.post_id,
+                    question.question_id,
+                    reply.reply_id
+                  )
+                }
+              />
+            </div>
+          )}
+          <Comment.Text>
+            <div className="whitespace-pre">{reply.text}</div>
+          </Comment.Text>
+          {showReplyForm && ( // 末尾にのみ表示
+            <ReplyForm
+              postId={post.post_id}
+              questionId={question.question_id}
+            />
+          )}
+        </Comment.Content>
       </Comment>
     </>
   );
