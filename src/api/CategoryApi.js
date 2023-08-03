@@ -1,5 +1,5 @@
 import ApiClient from "./ApiClient";
-import { CATEGORIES } from "./endpoints";
+import { POSTS } from "./endpoints";
 
 export class CategoryApi {
   constructor() {
@@ -7,7 +7,7 @@ export class CategoryApi {
   }
 
   async getCategories() {
-    return await this.apiClient.get(CATEGORIES.GET);
+    return await this.apiClient.get(POSTS.CATEGORIES.GET);
   }
   async postCategory(params) {
     return await this.apiClient.post(CATEGORIES.REGISTER.POST, params);

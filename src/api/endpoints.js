@@ -1,5 +1,5 @@
 export const POSTS = {
-  GET: "/posts",
+  GET: "/posts/",
   SINGLE: {
     QUESTIONS: {
       POST: "/posts/<post_id>/questions/",
@@ -10,10 +10,11 @@ export const POSTS = {
       },
     },
   },
+  CATEGORIES: {
+    GET: "/posts/categories/",
 };
 
 export const CATEGORIES = {
-  GET: "/categories/",
   REGISTER: {
     POST: "/posts/categories/",
   },

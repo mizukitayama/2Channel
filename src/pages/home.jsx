@@ -10,12 +10,7 @@ import { Container } from "semantic-ui-react";
 export const UpdatePosts = React.createContext({});
 export const Home = () => {
   const [posts, setPosts] = useState([]);
-  const [categories, setCategories] = useState([
-    "sauna",
-    "food",
-    "tech",
-    "other",
-  ]);
+  const [categories, setCategories] = useState([]);
   const [tasksLoading, setTasksLoading] = useState(false);
   const [categoriesLoading, setCategoriesLoading] = useState(false);
 
@@ -64,9 +59,8 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    // TODO: バックエンドと通信できるようになったら有効にする
     fetchPosts();
-    // fetchCategories();
+    fetchCategories();
   }, []);
 
   return (

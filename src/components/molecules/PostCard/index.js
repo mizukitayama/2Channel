@@ -69,17 +69,25 @@ export const PostCard = (props) => {
               <Comment.Metadata>
                 <div>{getDateLabel(post.created_at)}</div>
               </Comment.Metadata>
-              <Comment.Text>{post.post_text}</Comment.Text>
+              <Comment.Text>
+                <div className="whitespace-pre">{post.post_text}</div>
+              </Comment.Text>
             </Comment.Content>
           </Comment>
         </Comment.Group>
         {inputFormOpen ? (
           <Form reply className="my-3">
             <Input type="text" placeholder="Search..." action size="mini" fluid>
-              <input
+              <textarea
+                rows={1}
                 placeholder="質問内容を入力してください"
                 value={question}
                 onChange={(event) => onQuestionChange(event.target.value)}
+                style={{
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                  resize: "none",
+                }}
               />
               <Button type="submit" size="mini" primary onClick={postQuestion}>
                 質問する
@@ -118,7 +126,7 @@ export const PostCard = (props) => {
                       <div>{getDateLabel(question.created_at)}</div>
                     </Comment.Metadata>
                     <Comment.Text>
-                      <p>{question.text}</p>
+                      <p className="whitespace-pre">{question.text}</p>
                     </Comment.Text>
                     {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
                       <ReplyForm
@@ -142,7 +150,9 @@ export const PostCard = (props) => {
                             <Comment.Metadata>
                               <div>{getDateLabel(reply.created_at)}</div>
                             </Comment.Metadata>
-                            <Comment.Text>{reply.text}</Comment.Text>
+                            <Comment.Text>
+                              <div className="whitespace-pre">{reply.text}</div>
+                            </Comment.Text>
                             {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
                               <ReplyForm
                                 postId={post.post_id}
@@ -214,10 +224,17 @@ const ReplyForm = ({ postId, questionId }) => {
       {inputFormOpen ? (
         <Form reply className="my-3">
           <Input type="text" placeholder="Search..." action size="mini" fluid>
-            <input
+            <textarea
+              rows={1}
               placeholder="返信内容を入力してください"
               onChange={(event) => onReplyChange(event.target.value)}
               value={reply}
+              style={{
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+                resize: "none",
+                height: "3em",
+              }}
             />
             <Button type="submit" size="mini" primary onClick={postReply}>
               返信する
