@@ -9,7 +9,12 @@ export class CategoryApi {
   async getCategories() {
     return await this.apiClient.get(POSTS.CATEGORIES.GET);
   }
+
   async postCategory(params) {
-    return await this.apiClient.post(CATEGORIES.REGISTER.POST, params);
+    return await this.apiClient.post(POSTS.CATEGORIES.POST, params);
+  }
+
+  async deleteCategory(postId) {
+    return await this.apiClient.delete(POSTS.CATEGORIES.DELETE.replace("<category_id>", postId));
   }
 }

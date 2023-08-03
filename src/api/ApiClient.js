@@ -32,6 +32,19 @@ export default class ApiClient {
     }
   }
 
+  async delete(path) {
+    try {
+      const res = await axios.delete(`${this.baseUrl}${path}`, {
+        headers: {
+          Authorization: `Bearer ${this.token}`,
+        },
+      });
+      return res.data;
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async postWithoutToken(path, params) {
     try {
       const res = await axios.post(`${this.baseUrl}${path}`, params);
