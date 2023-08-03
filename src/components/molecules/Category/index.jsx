@@ -4,6 +4,7 @@ import { Menu } from "semantic-ui-react";
 export const Category = (props) => {
   const { categories, onClick } = props;
   const [activeCategory, setActiveCategory] = useState("all");
+  const categoryKeys = Object.keys(categories);
 
   const handleActiveCategory = (category) => {
     setActiveCategory(category);
@@ -21,10 +22,10 @@ export const Category = (props) => {
         onClick={() => handleActiveCategory("all")}
         className="text-lg"
       />
-      {categories.map((category) => {
+      {categoryKeys.map((category) => {
         return (
           <Menu.Item
-            name={category}
+            name={categories[category].category_name}
             active={activeCategory === `${category}`}
             onClick={() => handleActiveCategory(category)}
             className="text-lg"
