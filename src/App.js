@@ -5,13 +5,14 @@ import { Login } from "./pages/login";
 import { CoverImage } from "./pages/coverImage.jsx";
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { AuthCheck } from "./pages/authCheck.jsx";
 
 export default function App() {
   return (
     <div className="App">
       <div className="relative">
         <Router>
-          <div>
+          <AuthCheck>
             <Routes>
               <Route
                 exact
@@ -21,7 +22,7 @@ export default function App() {
               />
               <Route path="/login" element={<Login />} />
             </Routes>
-          </div>
+          </AuthCheck>
         </Router>
         {/* <CoverImage /> */}
       </div>
