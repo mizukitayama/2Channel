@@ -7,6 +7,8 @@ import {
   Icon,
   Input,
   Message,
+  Dimmer,
+  Loader,
 } from "semantic-ui-react";
 import { PostApi } from "../../../api/PostApi";
 import { UpdatePosts } from "../../../pages/home";
@@ -17,6 +19,7 @@ export const PostCard = (props) => {
   const [inputFormOpen, setInputFormOpen] = useState(false);
   const [question, setQuestion] = useState("");
   const [error, setError] = useState(false);
+  const [delPostLoading, setDelPostLoading] = useState(false);
 
   const onQuestionChange = (str) => {
     if (str.length >= 100) {
@@ -58,10 +61,44 @@ export const PostCard = (props) => {
         console.log(err);
       });
   };
+
+  const handleDeletePost = (postId) => {
+    if (!window.confirm("投稿を削除してもよろしいですか？")) return;
+    setDelPostLoading(true);
+    const postApi = new PostApi();
+    postApi
+      .deletePost(postId)
+      .then((res) => {
+        fetchPosts();
+        window.alert("投稿を削除しました。");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setDelPostLoading(false);
+      });
+  };
+
+  const user_id = localStorage.getItem("GMO2ch.user_id")
+    ? localStorage.getItem("GMO2ch.user_id")
+    : "";
+
   return (
     <Card fluid>
+      {post.user_id === user_id && delPostLoading && (
+        <Dimmer active inverted>
+          <Loader inverted />
+        </Dimmer>
+      )}
       <Card.Content>
-        <Comment.Group>
+        <Comment.Group
+          style={{
+            margin: 0,
+            padding: 0,
+            maxWidth: "none",
+          }}
+        >
           <Comment>
             <Comment.Avatar src={post.user_image_url} />
             <Comment.Content>
@@ -69,6 +106,17 @@ export const PostCard = (props) => {
               <Comment.Metadata>
                 <div>{getDateLabel(post.created_at)}</div>
               </Comment.Metadata>
+              {post.user_id === user_id && (
+                <div className="float-right">
+                  <Icon
+                    name="trash"
+                    link
+                    onClick={() => handleDeletePost(post.post_id)}
+                    loading={delPostLoading}
+                    color="grey"
+                  />
+                </div>
+              )}
               <Comment.Text>
                 <div className="whitespace-pre">{post.post_text}</div>
               </Comment.Text>

@@ -1,6 +1,7 @@
 export const POSTS = {
   GET: "/posts/",
   SINGLE: {
+    DELETE: "/posts/<post_id>/",
     QUESTIONS: {
       POST: "/posts/<post_id>/questions/",
       SINGLE: {

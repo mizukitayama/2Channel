@@ -30,4 +30,11 @@ export class PostApi {
       params
     );
   }
+
+  async deletePost(postId) {
+    console.log(POSTS.SINGLE.DELETE.replace("<post_id>", postId));
+    return await this.apiClient.delete(
+      POSTS.SINGLE.DELETE.replace("<post_id>", postId)
+    );
+  }
 }
