@@ -37,7 +37,7 @@ export const Main = (props) => {
             />
           </div>
           {searchHitPosts.map((post) => (
-            <PostCard key={post.id} post={post} />
+            <PostCard post={post} />
           ))}
         </>
       )}

@@ -30,8 +30,8 @@ export const Header = () => {
   );
 
   const options = [
-    { key: "settings", value: "settings", text: "Settings" },
-    { key: "sign-out", value: "sign-out", text: "Sign Out" },
+    { key: "settings", value: "settings", text: "管理者画面" },
+    { key: "sign-out", value: "sign-out", text: "ログアウト" },
   ];
   return (
     <>

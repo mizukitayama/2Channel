@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Comment, Form, Button, Card, Icon, Input } from "semantic-ui-react";
+import { PostApi } from "../../../api/PostApi";
+import { UpdatePosts } from "../../../pages/home";
 
 export const PostCard = (props) => {
   const { post } = props;
   const [chatLogOpen, setChatLogOpen] = useState(false);
   const [inputFormOpen, setInputFormOpen] = useState(false);
+  const [question, setQuestion] = useState("");
 
   const getDateLabel = (date) => {
     const dateObj = new Date(date);
@@ -16,6 +19,22 @@ export const PostCard = (props) => {
     return `${year}/${month}/${day} ${hour}:${minute}`;
   };
 
+  // const { posts, setPosts } = useContext(UpdatePosts);
+  const { fetchPosts } = useContext(UpdatePosts);
+  const postQuestion = () => {
+    const params = new URLSearchParams();
+    params.append("text", question);
+    const postApi = new PostApi();
+    postApi
+      .postQuestion(post.post_id, params)
+      .then((res) => {
+        setQuestion("");
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <Card fluid>
       <Card.Content>
@@ -32,9 +51,13 @@ export const PostCard = (props) => {
         </Comment.Group>
         {inputFormOpen ? (
           <Form reply className="my-3">
-            <Input type="text" placeholder="Search..." action size="mini" fluid>
-              <input placeholder="質問内容を入力してください" />
-              <Button type="submit" size="mini" primary>
+            <Input type="text" placeholder="Search..." action size="mini" fluid >
+              <input
+                placeholder="質問内容を入力してください"
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+              />
+              <Button type="submit" size="mini" primary onClick={postQuestion}>
                 質問する
               </Button>
             </Input>
@@ -58,17 +81,20 @@ export const PostCard = (props) => {
             </div>
             <Comment.Group>
               {post.question_list.map((question) => (
-                <Comment key={question.id}>
+                <Comment>
                   <Comment.Content>
                     <Comment.Author as="a">社員の人</Comment.Author>
                     <Comment.Metadata>
                       <div>{getDateLabel(question.created_at)}</div>
                     </Comment.Metadata>
                     <Comment.Text>
-                      <p>{question.question_text}</p>
+                      <p>{question.text}</p>
                     </Comment.Text>
                     {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
-                      <ReplyForm />
+                      <ReplyForm
+                        postId={post.post_id}
+                        questionId={question.question_id}
+                      />
                     )}
                   </Comment.Content>
                   <Comment.Group>
@@ -77,15 +103,18 @@ export const PostCard = (props) => {
                         reply,
                         i // 質問に対する返信
                       ) => (
-                        <Comment key={reply.id}>
+                        <Comment>
                           <Comment.Content>
                             <Comment.Author as="a">社員の人</Comment.Author>
                             <Comment.Metadata>
                               <div>{getDateLabel(reply.created_at)}</div>
                             </Comment.Metadata>
-                            <Comment.Text>{reply.reply_text}</Comment.Text>
+                            <Comment.Text>{reply.text}</Comment.Text>
                             {i === question.reply_list.length - 1 && ( // 末尾にのみ表示
-                              <ReplyForm />
+                              <ReplyForm
+                                postId={post.post_id}
+                                questionId={question.question_id}
+                              />
                             )}
                           </Comment.Content>
                         </Comment>
@@ -112,15 +141,45 @@ export const PostCard = (props) => {
   );
 };
 
-const ReplyForm = () => {
+const ReplyForm = ({ postId, questionId }) => {
   const [inputFormOpen, setInputFormOpen] = useState(false);
+  const [reply, setReply] = useState("");
+
+  const onReplyChange = (str) => {
+    if (str.length >= 100) {
+      console.log("100")
+      return
+    }
+    setReply(str)
+  }
+
+  const { fetchPosts } = useContext(UpdatePosts);
+  const postReply = () => {
+    const params = new URLSearchParams();
+    params.append("text", reply);
+    const postApi = new PostApi();
+    postApi
+      .postReply(postId, questionId, params)
+      .then((res) => {
+        setReply("");
+        fetchPosts()
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       {inputFormOpen ? (
         <Form reply className="my-3">
           <Input type="text" placeholder="Search..." action size="mini" fluid>
-            <input placeholder="返信内容を入力してください" />
-            <Button type="submit" size="mini" primary>
+            <input
+              placeholder="返信内容を入力してください"
+              onChange={(event) => onReplyChange(event.target.value)}
+              value={reply}
+            />
+            <Button type="submit" size="mini" primary onClick={postReply}>
               返信する
             </Button>
           </Input>
