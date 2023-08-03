@@ -3,12 +3,16 @@ import { CategoryCurrentList } from "../../molecules/Category/currentList";
 import { Modal, Button, Input, Loader, Message } from "semantic-ui-react";
 import { useState } from "react";
 import { CategoryApi } from "../../../api/CategoryApi";
+import { UpdateCategories } from "../../../pages/adminPage";
+import React, {useContext} from "react"
 
 export const AddCategory = ({ categories }) => {
   const [newCategory, setNewCategory] = useState("");
   const [isCategoryAddModalOpen, setIsCategoryAddModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(false);
+
+  const { fetchCategories } = useContext(UpdateCategories)
 
   function onChangeNewCategory(category) {
     console.log(newCategory);
@@ -27,19 +31,19 @@ export const AddCategory = ({ categories }) => {
 		setError(false)
     setIsLoading(true);
     setNewCategory("");
-    categories.push(newCategory);
     if (newCategory.length >= 10 || newCategory.length <= 0) {
       return;
     }
+
     const params = new URLSearchParams();
     params.append("text", newCategory);
     const categoryApi = new CategoryApi();
-    setNewCategory("");
     categoryApi
       .postCategory(params)
       .then((res) => {
         setIsLoading(false);
         setIsCategoryAddModalOpen(false);
+        fetchCategories()
       })
       .catch((err) => {
         setIsLoading(false);
@@ -69,7 +73,7 @@ export const AddCategory = ({ categories }) => {
             <Modal.Content>
               <div className="grid gap-[32px] flex justify-center">
                 <div className="text-center">
-                  カテゴリーを10文字以内で入力してください。
+                  カテゴリーを10文字未満で入力してください。
                 </div>
                 <div>
                   <Input

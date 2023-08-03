@@ -12,12 +12,9 @@ export const POSTS = {
   },
   CATEGORIES: {
     GET: "/posts/categories/",
-};
-
-export const CATEGORIES = {
-  REGISTER: {
     POST: "/posts/categories/",
-  },
+    DELETE: "/posts/categories/<category_id>/"
+  }
 };
 
 export const ACCOUNTS = {

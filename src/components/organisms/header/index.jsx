@@ -38,12 +38,20 @@ export const Header = () => {
     <>{userName}
     </>
   );
+let options;
+  if (isUserOwner) {
+    options = [
+      { key: "home", value: "home", text: "ホーム"},
+      { key: "settings", value: "settings", text: "管理者画面" },
+      { key: "sign-out", value: "sign-out", text: "ログアウト" },
+    ];
+  } else {
+    options = [
+      { key: "home", value: "home", text: "ホーム"},
+      { key: "sign-out", value: "sign-out", text: "ログアウト" },
+    ];
+  }
 
-  const options = [
-    { key: "home", value: "home", text: "ホーム"},
-    { key: "settings", value: "settings", text: "管理者画面" },
-    { key: "sign-out", value: "sign-out", text: "ログアウト" },
-  ];
   return (
     <>
       <div className="flex flex-row justify-between sticky top-0 z-10 bg-white py-[32px] -mx-[2px]">
