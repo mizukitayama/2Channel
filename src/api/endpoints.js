@@ -14,11 +14,14 @@ export const POSTS = {
 
 export const CATEGORIES = {
   GET: "/categories/",
+  REGISTER: {
+    POST: "/posts/categories/",
+  },
 };
 
 export const ACCOUNTS = {
   REGISTER: {
-    POST: "/accounts/register",
+    POST: "/accounts/register/",
   },
   LOGIN: {
     POST: "/accounts/login/",
