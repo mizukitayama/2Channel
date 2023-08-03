@@ -44,7 +44,8 @@ export const Home = () => {
   };
 
   const fetchPostsByCategory = (category) => {
-    console.log("searching by category: ", category);
+    setTasksLoading(true);
+    setPosts([]);
     const postApi = new PostApi();
     postApi
       .getPosts({
@@ -55,6 +56,9 @@ export const Home = () => {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setTasksLoading(false);
       });
   };
 
