@@ -11,8 +11,8 @@ export const POSTS = {
         REPLIES: {
           POST: "/posts/<post_id>/questions/<question_id>/replies/",
           SINGLE: {
-            DELETE:
-              "/posts/<post_id>/questions/<question_id>/replies/<reply_id>/",
+            PUT: "/posts/<post_id>/questions/<question_id>/replies/<reply_id>/",
+            DELETE: "/posts/<post_id>/questions/<question_id>/replies/<reply_id>/",
           },
         },
       },
@@ -26,8 +26,8 @@ export const POSTS = {
 export const CATEGORIES = {
   REGISTER: {
     POST: "/posts/categories/",
-    DELETE: "/posts/categories/<category_id>/"
-  }
+    DELETE: "/posts/categories/<category_id>/",
+  },
 };
 
 export const ACCOUNTS = {

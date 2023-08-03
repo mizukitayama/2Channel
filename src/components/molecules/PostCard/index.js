@@ -50,7 +50,6 @@ export const PostCard = (props) => {
     setEditingText(str);
   };
 
-  // const { posts, setPosts } = useContext(UpdatePosts);
   const { fetchPosts } = useContext(UpdatePosts);
   const postQuestion = () => {
     if (question.length >= 100 || question.length <= 0) {
@@ -74,18 +73,21 @@ export const PostCard = (props) => {
 
   const putEditedPost = () => {
     if (editingText.length >= 100 || editingText.length <= 0) {
-      return
+      return;
     }
-    const params = new URLSearchParams()
-    params.append("text", editingText)
+    const params = new URLSearchParams();
+    params.append("text", editingText);
     const postApi = new PostApi();
-    postApi.putPost(post.post_id, params)
-    .then((res) => {
-      setEditPost(!editPost)
-      fetchPosts()
-    }).catch((err) => {
-      console.log(err)
-    })
+    postApi
+      .putPost(post.post_id, params)
+      .then((res) => {
+        setEditPost(!editPost);
+        setInputFormOpen(false);
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const handleDeletePost = (postId) => {
@@ -109,6 +111,7 @@ export const PostCard = (props) => {
 
   const handleEditPost = (postId, text) => {
     setEditPost(!editPost);
+    setInputFormOpen(false);
     setEditingText(text);
   };
 
@@ -156,43 +159,51 @@ export const PostCard = (props) => {
                   />
                 </div>
               )}
-              {editPost ? (
-                <></>
-              ) : (
-                <Comment.Text>
-                  <div className="whitespace-pre">{post.post_text}</div>
-                </Comment.Text>
-              )}
+              <Comment.Text>
+                {editPost ? (
+                  <Form reply className="my-3">
+                    <Input
+                      type="text"
+                      placeholder="Search..."
+                      action
+                      size="mini"
+                      fluid
+                    >
+                      <textarea
+                        rows={1}
+                        placeholder="投稿を編集する"
+                        value={editingText}
+                        onChange={(event) =>
+                          onEditingTextChange(event.target.value)
+                        }
+                        style={{
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          resize: "none",
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        size="mini"
+                        primary
+                        onClick={putEditedPost}
+                      >
+                        更新
+                      </Button>
+                    </Input>
+                    {error && (
+                      <Message color="red">
+                        だめです。100字未満で入力してください。
+                      </Message>
+                    )}
+                  </Form>
+                ) : (
+                  <div className="whitespace-pre-line">{post.post_text}</div>
+                )}
+              </Comment.Text>
             </Comment.Content>
           </Comment>
         </Comment.Group>
-        {editPost ? (
-          <Form reply className="m-[16px] ml-[48px]">
-            <Input type="text" placeholder="Search..." action size="mini" fluid>
-              <textarea
-                rows={1}
-                placeholder="投稿を編集する"
-                value={editingText}
-                onChange={(event) => onEditingTextChange(event.target.value)}
-                style={{
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
-                  resize: "none",
-                }}
-              />
-              <Button type="submit" size="mini" primary onClick={putEditedPost}>
-                更新
-              </Button>
-            </Input>
-            {error && (
-              <Message color="red">
-                だめです。100字未満で入力してください。
-              </Message>
-            )}
-          </Form>
-        ) : (
-          <></>
-        )}
         {inputFormOpen ? (
           <Form reply className="my-3">
             <Input type="text" placeholder="Search..." action size="mini" fluid>
@@ -259,6 +270,9 @@ export const PostCard = (props) => {
 const Question = ({ question, post }) => {
   const [loading, setLoading] = useState(false);
   const { fetchPosts } = useContext(UpdatePosts);
+  const [editQuestion, setEditQuestion] = useState(false);
+  const [editingText, setEditingText] = useState("");
+  const [error, setError] = useState(false);
   const handleDeleteQuestion = (postId, questionId) => {
     if (!window.confirm("質問を削除してもよろしいですか？")) return;
     setLoading(true);
@@ -278,6 +292,42 @@ const Question = ({ question, post }) => {
       });
   };
 
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
+  };
+
+  const putQuestion = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    const params = new URLSearchParams();
+    params.append("text", editingText);
+
+    postApi
+      .putQuestion(post.post_id, question.question_id, params)
+      .then((res) => {
+        setEditQuestion(false);
+        setEditingText("");
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleEditQuestion = () => {
+    setEditQuestion(!editQuestion);
+    setEditingText(question.text);
+  };
+
   const user_id = localStorage.getItem("GMO2ch.user_id")
     ? localStorage.getItem("GMO2ch.user_id")
     : "";
@@ -295,6 +345,12 @@ const Question = ({ question, post }) => {
           {question.user_id === user_id && (
             <div className="float-right">
               <Icon
+                name="edit"
+                link
+                color="grey"
+                onClick={() => handleEditQuestion()}
+              />
+              <Icon
                 name="trash"
                 link
                 color="grey"
@@ -305,7 +361,41 @@ const Question = ({ question, post }) => {
             </div>
           )}
           <Comment.Text>
-            <p className="whitespace-pre">{question.text}</p>
+            {editQuestion ? (
+              <>
+                <Input type="text" placeholder="Search..." action fluid>
+                  <textarea
+                    rows={1}
+                    placeholder="投稿を編集する"
+                    value={editingText}
+                    onChange={(event) =>
+                      onEditingTextChange(event.target.value)
+                    }
+                    style={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      resize: "none",
+                      width: "100%",
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="mini"
+                    primary
+                    onClick={putQuestion}
+                  >
+                    更新
+                  </Button>
+                </Input>
+                {error && (
+                  <Message color="red">
+                    だめです。100字未満で入力してください。
+                  </Message>
+                )}
+              </>
+            ) : (
+              <p className="whitespace-pre-line">{question.text}</p>
+            )}
           </Comment.Text>
           {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
             <ReplyForm
@@ -387,7 +477,7 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
             </div>
           )}
           <Comment.Text>
-            <div className="whitespace-pre">{reply.text}</div>
+            <div className="whitespace-pre-line">{reply.text}</div>
           </Comment.Text>
           {showReplyForm && ( // 末尾にのみ表示
             <ReplyForm

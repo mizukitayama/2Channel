@@ -33,7 +33,8 @@ export class PostApi {
 
   async putPost(postId, params) {
     return await this.apiClient.put(
-      POSTS.SINGLE.DELETE.replace("<post_id>", postId), params
+      POSTS.SINGLE.DELETE.replace("<post_id>", postId),
+      params
     );
   }
 
@@ -41,6 +42,16 @@ export class PostApi {
     console.log(POSTS.SINGLE.DELETE.replace("<post_id>", postId));
     return await this.apiClient.delete(
       POSTS.SINGLE.DELETE.replace("<post_id>", postId)
+    );
+  }
+
+  async putQuestion(postId, questionId, params) {
+    return await this.apiClient.put(
+      POSTS.SINGLE.QUESTIONS.SINGLE.PUT.replace("<post_id>", postId).replace(
+        "<question_id>",
+        questionId
+      ),
+      params
     );
   }
 
