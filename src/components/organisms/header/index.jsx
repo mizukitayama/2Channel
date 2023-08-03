@@ -15,6 +15,9 @@ export const Header = () => {
 
   const handleOptionClick = (optionKey) => {
     switch (optionKey) {
+      case "home":
+        navigate("/");
+        break;
       case "sign-out":
         Auth.logout();
         break;
@@ -37,6 +40,7 @@ export const Header = () => {
   );
 
   const options = [
+    { key: "home", value: "home", text: "ホーム"},
     { key: "settings", value: "settings", text: "管理者画面" },
     { key: "sign-out", value: "sign-out", text: "ログアウト" },
   ];
