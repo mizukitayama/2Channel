@@ -191,12 +191,12 @@ const ReplyForm = ({ postId, questionId }) => {
     const params = new URLSearchParams();
     params.append("text", reply);
 
-    
+    setReply("");
+
     const postApi = new PostApi();
     postApi
     .postReply(postId, questionId, params)
     .then((res) => {
-        setReply("");
         fetchPosts();
       })
       .catch((err) => {
