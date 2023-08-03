@@ -5,6 +5,7 @@ import { Header } from "../components/organisms/header";
 import { CategoryApi } from "../api/CategoryApi";
 import { PostApi } from "../api/PostApi";
 import { CoverImage } from "./coverImage";
+import { Container } from "semantic-ui-react";
 
 export const UpdatePosts = React.createContext({});
 export const Home = () => {
@@ -71,22 +72,24 @@ export const Home = () => {
   return (
     <>
       <div>
-        <div className="mb-[32px] mx-[32px] container">
-          <Header />
-          <div className="md:grid md:grid-cols-4 md:gap-[32px]">
-            <div className="md:col-span-1">
-              <SideBar
-                categories={categories}
-                onItemClick={fetchPostsByCategory}
-              />
-            </div>
-            <div className="md:col-span-3">
-              <UpdatePosts.Provider value={{ posts, setPosts, fetchPosts }}>
-                <Main posts={posts} loading={tasksLoading} />
-              </UpdatePosts.Provider>
+        <Container>
+          <div className="mb-[32px] mx-[32px] container">
+            <Header />
+            <div className="md:grid md:grid-cols-4 md:gap-[30px]">
+              <div className="md:col-span-1">
+                <SideBar
+                  categories={categories}
+                  onItemClick={fetchPostsByCategory}
+                />
+              </div>
+              <div className="md:col-span-3">
+                <UpdatePosts.Provider value={{ posts, setPosts, fetchPosts }}>
+                  <Main posts={posts} loading={tasksLoading} />
+                </UpdatePosts.Provider>
+              </div>
             </div>
           </div>
-        </div>
+        </Container>
       </div>
       <CoverImage />
     </>

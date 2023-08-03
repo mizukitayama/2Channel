@@ -1,14 +1,31 @@
 import { ButtonComponentWithFunction } from "../../atoms/ButtonComponentWithFunction";
 import { CategoryCurrentList } from "../../molecules/Category/currentList";
-import { Modal, Button, Input, Icon } from "semantic-ui-react";
+import { Modal, Button, Input, Loader, Message } from "semantic-ui-react";
 import { useState } from "react";
 import { CategoryApi } from "../../../api/CategoryApi";
 
 export const AddCategory = ({ categories }) => {
   const [newCategory, setNewCategory] = useState("");
   const [isCategoryAddModalOpen, setIsCategoryAddModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  function onChangeNewCategory(category) {
+    console.log(newCategory);
+    if (category.length >= 10) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setNewCategory(category);
+  }
 
   function addCategory() {
+    if (newCategory.length >= 10) {
+      return;
+    }
+		setError(false)
+    setIsLoading(true);
     setNewCategory("");
     categories.push(newCategory);
     if (newCategory.length >= 10 || newCategory.length <= 0) {
@@ -21,9 +38,11 @@ export const AddCategory = ({ categories }) => {
     categoryApi
       .postCategory(params)
       .then((res) => {
+        setIsLoading(false);
         setIsCategoryAddModalOpen(false);
       })
       .catch((err) => {
+        setIsLoading(false);
         console.log(err);
       });
   }
@@ -44,25 +63,36 @@ export const AddCategory = ({ categories }) => {
             </Button>
           }
         >
-          <Modal.Content>
-            <div className="grid gap-[32px] flex justify-center">
-              <div className="text-center">
-              	カテゴリーを10文字以内で入力してください。
+          {isLoading ? (
+            <Loader active inline="centered" />
+          ) : (
+            <Modal.Content>
+              <div className="grid gap-[32px] flex justify-center">
+                <div className="text-center">
+                  カテゴリーを10文字以内で入力してください。
+                </div>
+                <div>
+                  <Input
+                    placeholder="カテゴリー名"
+                    onChange={(event) =>
+                      onChangeNewCategory(event.target.value)
+                    }
+                    className="w-[200px]"
+                    value={newCategory}
+                  />
+                  <ButtonComponentWithFunction
+                    value="+ 追加"
+                    onClick={addCategory}
+										/>
+										{error && (
+											<Message color="red">
+												だめです。10字以内で入力してください。
+											</Message>
+										)}
+                </div>
               </div>
-              <div>
-                <Input
-                  placeholder="カテゴリー名"
-                  onChange={(event) => setNewCategory(event.target.value)}
-                  className="w-[200px]"
-                  value={newCategory}
-                />
-                <ButtonComponentWithFunction
-                  value="+ 追加"
-                  onClick={addCategory}
-                />
-              </div>
-            </div>
-          </Modal.Content>
+            </Modal.Content>
+          )}
         </Modal>
       </div>
     </div>
