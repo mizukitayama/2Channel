@@ -64,6 +64,18 @@ export class PostApi {
     );
   }
 
+  async putReply(postId, questionId, replyId, params) {
+    return await this.apiClient.put(
+      POSTS.SINGLE.QUESTIONS.SINGLE.REPLIES.SINGLE.PUT.replace(
+        "<post_id>",
+        postId
+      )
+        .replace("<question_id>", questionId)
+        .replace("<reply_id>", replyId),
+      params
+    );
+  }
+
   async deleteReply(postId, questionId, replyId) {
     return await this.apiClient.delete(
       POSTS.SINGLE.QUESTIONS.SINGLE.REPLIES.SINGLE.DELETE.replace(

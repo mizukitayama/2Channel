@@ -39,7 +39,7 @@ export const Header = () => {
     </>
   );
 let options;
-  if (isUserOwner) {
+  if (isUserOwner === "true") {
     options = [
       { key: "home", value: "home", text: "ホーム"},
       { key: "settings", value: "settings", text: "管理者画面" },

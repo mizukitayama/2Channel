@@ -34,6 +34,9 @@ export const ACCOUNTS = {
   REGISTER: {
     POST: "/accounts/register/",
   },
+  UPDATE: {
+    GET: "/accounts/update/",
+  },
   LOGIN: {
     POST: "/accounts/login/",
   },

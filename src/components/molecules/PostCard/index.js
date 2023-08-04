@@ -365,7 +365,7 @@ const Question = ({ question, post }) => {
               <>
                 <Input type="text" placeholder="Search..." action fluid>
                   <textarea
-                    rows={1}
+                    rows={5}
                     placeholder="投稿を編集する"
                     value={editingText}
                     onChange={(event) =>
@@ -426,7 +426,11 @@ const Question = ({ question, post }) => {
 
 const Reply = ({ reply, question, post, showReplyForm }) => {
   const [loading, setLoading] = useState(false);
+  const [editReply, setEditReply] = useState(false);
+  const [editingText, setEditingText] = useState("");
   const { fetchPosts } = useContext(UpdatePosts);
+  const [error, setError] = useState(false);
+
   const handleDeleteReply = (postId, questionId, replyId) => {
     if (!window.confirm("返信を削除してもよろしいですか？")) return;
     setLoading(true);
@@ -446,6 +450,41 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
       });
   };
 
+  const putReply = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    const params = new URLSearchParams();
+    params.append("text", editingText);
+
+    postApi
+      .putReply(post.post_id, question.question_id, reply.reply_id, params)
+      .then((res) => {
+        setEditReply(false);
+        setEditingText("");
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
+  };
+
+  const handleEditReply = () => {
+    setEditReply(!editReply);
+    setEditingText(reply.text)
+  };
+
   const user_id = localStorage.getItem("GMO2ch.user_id")
     ? localStorage.getItem("GMO2ch.user_id")
     : "";
@@ -463,6 +502,12 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
           {reply.user_id === user_id && (
             <div className="float-right">
               <Icon
+                name="edit"
+                link
+                color="grey"
+                onClick={() => handleEditReply()}
+              />
+              <Icon
                 name="trash"
                 link
                 color="grey"
@@ -477,7 +522,41 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
             </div>
           )}
           <Comment.Text>
-            <div className="whitespace-pre-line">{reply.text}</div>
+            {editReply ? (
+              <>
+                <Input type="text" placeholder="Search..." action fluid>
+                  <textarea
+                    rows={5}
+                    placeholder="投稿を編集する"
+                    value={editingText}
+                    onChange={(event) =>
+                      onEditingTextChange(event.target.value)
+                    }
+                    style={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      resize: "none",
+                      width: "100%",
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="mini"
+                    primary
+                    onClick={putReply}
+                  >
+                    更新
+                  </Button>
+                </Input>
+                {error && (
+                  <Message color="red">
+                    だめです。100字未満で入力してください。
+                  </Message>
+                )}
+              </>
+            ) : (
+              <div className="whitespace-pre-line">{reply.text}</div>
+            )}
           </Comment.Text>
           {showReplyForm && ( // 末尾にのみ表示
             <ReplyForm
