@@ -123,6 +123,17 @@ export const PostCard = (props) => {
     ? localStorage.getItem("GMO2ch.user_id")
     : "";
 
+  var stringToNumber = (str) => {
+    // 文字列 -> 配列 -> 文字コードの配列 -> 全部足す
+    return Array.from(str)
+      .map((ch) => ch.charCodeAt(0))
+      .reduce((a, b) => a + b);
+  };
+  // 入力した文字列を数値に変換
+  var n = stringToNumber(post.category);
+  // hsl 用に 0 ~ 360 に収める
+  var colorAngle = (n * n + 180) % 360;
+
   return (
     <Card fluid>
       {post.user_id === user_id && delPostLoading && (
@@ -145,7 +156,14 @@ export const PostCard = (props) => {
               <Comment.Metadata>
                 <div>{getDateLabel(post.created_at)}</div>
                 <div className="ml-[4px]">
-                  <Label as="a" size="mini">
+                  <Label
+                    as="a"
+                    size="mini"
+                    style={{
+                      backgroundColor: `hsl(${colorAngle}, 85%, 64%)`,
+                      color: "white",
+                    }}
+                  >
                     {post.category}
                   </Label>
                 </div>
