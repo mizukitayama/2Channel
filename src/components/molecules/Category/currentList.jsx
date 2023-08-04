@@ -59,14 +59,16 @@ export const CategoryCurrentList = ({ categories }) => {
               return (
                 <Table.Row>
                   <Table.Cell>
-                      {categories[category].category_name != "その他" && (
-                        <>
-                    <div onClick={() => deleteCategories(category)}>
+                    {categories[category].category_name != "その他" ? (
+                      <>
+                        <div onClick={() => deleteCategories(category)}>
                           <Icon name="trash" size="small" />{" "}
-                    </div>
-                        </>
-                          )}
                           {categories[category].category_name}
+                        </div>
+                      </>
+                    ) : (
+                      <>{categories[category].category_name}</>
+                    )}
                   </Table.Cell>
                   <Table.Cell>
                     {postCounts[category] ? postCounts[category] : 0}
