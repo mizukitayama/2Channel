@@ -14,6 +14,18 @@ export class Auth {
       });
   }
 
+  static async update() {
+    const authApi = new AuthApi();
+    return authApi
+      .update()
+      .then((res) => {
+        return res;
+      })
+      .catch((e) => {
+        return e;
+      });
+  }
+
   static async login(workspaceId, userId, password) {
     const authApi = new AuthApi();
     return authApi

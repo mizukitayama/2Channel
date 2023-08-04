@@ -47,6 +47,11 @@ export const Login = () => {
     setPassword(event.target.value);
   };
 
+  const redirectToRegister = () => {
+		navigate("/register")
+	}
+
+
   return (
     <>
       <Container text>
@@ -81,7 +86,8 @@ export const Login = () => {
                     onChange={handlePasswordChange}
                   />
                 </Form.Field>
-                <div className="flex justify-end mr-[16px]">
+                <div className="flex justify-between mr-[16px]">
+									<div className="text-blue" onClick={redirectToRegister}>ワークスペースの追加</div>
                   <ButtonComponentWithFunction
                     value={"ログイン"}
                     onClick={onLogin}

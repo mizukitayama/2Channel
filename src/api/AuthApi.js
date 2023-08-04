@@ -18,6 +18,16 @@ export class AuthApi {
     }
   }
 
+  async update() {
+    try {
+      return await this.apiClient.get(
+        ACCOUNTS.UPDATE.GET,
+      );
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async login(workspaceId, userId, password) {
     const params = {
       workspace_id: workspaceId,

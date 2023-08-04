@@ -32,6 +32,8 @@ export const PostCard = (props) => {
   const [question, setQuestion] = useState("");
   const [error, setError] = useState(false);
   const [delPostLoading, setDelPostLoading] = useState(false);
+  const [editPost, setEditPost] = useState(false);
+  const [editingText, setEditingText] = useState("");
 
   const onQuestionChange = (str) => {
     if (str.length >= 100) {
@@ -42,7 +44,15 @@ export const PostCard = (props) => {
     setQuestion(str);
   };
 
-  // const { posts, setPosts } = useContext(UpdatePosts);
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
+  };
+
   const { fetchPosts } = useContext(UpdatePosts);
   const postQuestion = () => {
     if (question.length >= 100 || question.length <= 0) {
@@ -56,6 +66,25 @@ export const PostCard = (props) => {
       .then((res) => {
         setQuestion("");
         setChatLogOpen(true);
+        setInputFormOpen(false);
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const putEditedPost = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) {
+      return;
+    }
+    const params = new URLSearchParams();
+    params.append("text", editingText);
+    const postApi = new PostApi();
+    postApi
+      .putPost(post.post_id, params)
+      .then((res) => {
+        setEditPost(!editPost);
         setInputFormOpen(false);
         fetchPosts();
       })
@@ -81,6 +110,12 @@ export const PostCard = (props) => {
       .finally(() => {
         setDelPostLoading(false);
       });
+  };
+
+  const handleEditPost = (postId, text) => {
+    setEditPost(!editPost);
+    setInputFormOpen(false);
+    setEditingText(text);
   };
 
   const user_id = localStorage.getItem("GMO2ch.user_id")
@@ -112,6 +147,13 @@ export const PostCard = (props) => {
               {post.user_id === user_id && (
                 <div className="float-right">
                   <Icon
+                    name="edit"
+                    link
+                    onClick={() => handleEditPost(post.post_id, post.post_text)}
+                    loading={delPostLoading}
+                    color="grey"
+                  />
+                  <Icon
                     name="trash"
                     link
                     onClick={() => handleDeletePost(post.post_id)}
@@ -121,12 +163,51 @@ export const PostCard = (props) => {
                 </div>
               )}
               <Comment.Text>
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  className="whitespace-pre"
-                >
-                  {post.post_text}
-                </ReactMarkdown>
+                {editPost ? (
+                  <Form reply className="my-3">
+                    <Input
+                      type="text"
+                      placeholder="Search..."
+                      action
+                      size="mini"
+                      fluid
+                    >
+                      <textarea
+                        rows={1}
+                        placeholder="投稿を編集する"
+                        value={editingText}
+                        onChange={(event) =>
+                          onEditingTextChange(event.target.value)
+                        }
+                        style={{
+                          borderTopRightRadius: 0,
+                          borderBottomRightRadius: 0,
+                          resize: "none",
+                        }}
+                      />
+                      <Button
+                        type="submit"
+                        size="mini"
+                        primary
+                        onClick={putEditedPost}
+                      >
+                        更新
+                      </Button>
+                    </Input>
+                    {error && (
+                      <Message color="red">
+                        だめです。100字未満で入力してください。
+                      </Message>
+                    )}
+                  </Form>
+                ) : (
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    className="whitespace-pre-line"
+                  >
+                    {post.post_text}
+                  </ReactMarkdown>
+                )}
               </Comment.Text>
             </Comment.Content>
           </Comment>
@@ -197,6 +278,9 @@ export const PostCard = (props) => {
 const Question = ({ question, post }) => {
   const [loading, setLoading] = useState(false);
   const { fetchPosts } = useContext(UpdatePosts);
+  const [editQuestion, setEditQuestion] = useState(false);
+  const [editingText, setEditingText] = useState("");
+  const [error, setError] = useState(false);
   const handleDeleteQuestion = (postId, questionId) => {
     if (!window.confirm("質問を削除してもよろしいですか？")) return;
     setLoading(true);
@@ -216,6 +300,42 @@ const Question = ({ question, post }) => {
       });
   };
 
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
+  };
+
+  const putQuestion = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    const params = new URLSearchParams();
+    params.append("text", editingText);
+
+    postApi
+      .putQuestion(post.post_id, question.question_id, params)
+      .then((res) => {
+        setEditQuestion(false);
+        setEditingText("");
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleEditQuestion = () => {
+    setEditQuestion(!editQuestion);
+    setEditingText(question.text);
+  };
+
   const user_id = localStorage.getItem("GMO2ch.user_id")
     ? localStorage.getItem("GMO2ch.user_id")
     : "";
@@ -233,6 +353,12 @@ const Question = ({ question, post }) => {
           {question.user_id === user_id && (
             <div className="float-right">
               <Icon
+                name="edit"
+                link
+                color="grey"
+                onClick={() => handleEditQuestion()}
+              />
+              <Icon
                 name="trash"
                 link
                 color="grey"
@@ -243,12 +369,46 @@ const Question = ({ question, post }) => {
             </div>
           )}
           <Comment.Text>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              className="whitespace-pre"
-            >
-              {question.text}
-            </ReactMarkdown>
+            {editQuestion ? (
+              <>
+                <Input type="text" placeholder="Search..." action fluid>
+                  <textarea
+                    rows={5}
+                    placeholder="投稿を編集する"
+                    value={editingText}
+                    onChange={(event) =>
+                      onEditingTextChange(event.target.value)
+                    }
+                    style={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      resize: "none",
+                      width: "100%",
+                    }}
+                  />
+                  <Button
+                    type="submit"
+                    size="mini"
+                    primary
+                    onClick={putQuestion}
+                  >
+                    更新
+                  </Button>
+                </Input>
+                {error && (
+                  <Message color="red">
+                    だめです。100字未満で入力してください。
+                  </Message>
+                )}
+              </>
+            ) : (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                className="whitespace-pre-line"
+              >
+                {question.text}
+              </ReactMarkdown>
+            )}
           </Comment.Text>
           {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
             <ReplyForm
@@ -279,7 +439,11 @@ const Question = ({ question, post }) => {
 
 const Reply = ({ reply, question, post, showReplyForm }) => {
   const [loading, setLoading] = useState(false);
+  const [editReply, setEditReply] = useState(false);
+  const [editingText, setEditingText] = useState("");
   const { fetchPosts } = useContext(UpdatePosts);
+  const [error, setError] = useState(false);
+
   const handleDeleteReply = (postId, questionId, replyId) => {
     if (!window.confirm("返信を削除してもよろしいですか？")) return;
     setLoading(true);
@@ -299,6 +463,41 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
       });
   };
 
+  const putReply = () => {
+    if (editingText.length >= 100 || editingText.length <= 0) return;
+    setLoading(true);
+    const postApi = new PostApi();
+    const params = new URLSearchParams();
+    params.append("text", editingText);
+
+    postApi
+      .putReply(post.post_id, question.question_id, reply.reply_id, params)
+      .then((res) => {
+        setEditReply(false);
+        setEditingText("");
+        fetchPosts();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  const onEditingTextChange = (str) => {
+    if (str.length >= 100) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setEditingText(str);
+  };
+
+  const handleEditReply = () => {
+    setEditReply(!editReply);
+    setEditingText(reply.text);
+  };
+
   const user_id = localStorage.getItem("GMO2ch.user_id")
     ? localStorage.getItem("GMO2ch.user_id")
     : "";
@@ -316,6 +515,12 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
           {reply.user_id === user_id && (
             <div className="float-right">
               <Icon
+                name="edit"
+                link
+                color="grey"
+                onClick={() => handleEditReply()}
+              />
+              <Icon
                 name="trash"
                 link
                 color="grey"
@@ -330,12 +535,41 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
             </div>
           )}
           <Comment.Text>
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              className="whitespace-pre"
-            >
-              {reply.text}
-            </ReactMarkdown>
+            {editReply ? (
+              <>
+                <Input type="text" placeholder="Search..." action fluid>
+                  <textarea
+                    rows={5}
+                    placeholder="投稿を編集する"
+                    value={editingText}
+                    onChange={(event) =>
+                      onEditingTextChange(event.target.value)
+                    }
+                    style={{
+                      borderTopRightRadius: 0,
+                      borderBottomRightRadius: 0,
+                      resize: "none",
+                      width: "100%",
+                    }}
+                  />
+                  <Button type="submit" size="mini" primary onClick={putReply}>
+                    更新
+                  </Button>
+                </Input>
+                {error && (
+                  <Message color="red">
+                    だめです。100字未満で入力してください。
+                  </Message>
+                )}
+              </>
+            ) : (
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                className="whitespace-pre-line"
+              >
+                {reply.text}
+              </ReactMarkdown>
+            )}
           </Comment.Text>
           {showReplyForm && ( // 末尾にのみ表示
             <ReplyForm
