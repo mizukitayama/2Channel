@@ -6,12 +6,10 @@ export class AuthApi {
     this.apiClient = new ApiClient();
   }
 
-  async register(token) {
-    const params = { token: token };
+  async register() {
     try {
       return await this.apiClient.postWithoutToken(
         ACCOUNTS.REGISTER.POST,
-        params
       );
     } catch (e) {
       throw e;

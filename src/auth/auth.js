@@ -2,10 +2,10 @@ import { AuthApi } from "../api/AuthApi";
 import { PostApi } from "../api/PostApi";
 
 export class Auth {
-  static async register(token) {
+  static async register() {
     const authApi = new AuthApi();
     return authApi
-      .register(token)
+      .register()
       .then((res) => {
         return res;
       })
