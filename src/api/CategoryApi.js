@@ -11,10 +11,10 @@ export class CategoryApi {
   }
 
   async postCategory(params) {
-    return await this.apiClient.post(POSTS.CATEGORIES.POST, params);
+    return await this.apiClient.post(CATEGORIES.REGISTER.POST, params);
   }
 
   async deleteCategory(postId) {
-    return await this.apiClient.delete(POSTS.CATEGORIES.DELETE.replace("<category_id>", postId));
+    return await this.apiClient.delete(CATEGORIES.REGISTER.DELETE.replace("<category_id>", postId));
   }
 }

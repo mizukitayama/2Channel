@@ -1,5 +1,8 @@
 export const POSTS = {
   GET: "/posts/",
+  USER: {
+    GET:"/posts/users/<user_id>/"
+  },
   SINGLE: {
     PUT: "/posts/<post_id>/",
     DELETE: "/posts/<post_id>/",

@@ -32,6 +32,12 @@ export const Category = (props) => {
           />
         );
       })}
+      <Menu.Item
+        name="自分の投稿"
+        active={activeCategory === "mine"}
+        onClick={() => handleActiveCategory("mine")}
+        className="text-lg"
+      />
     </Menu>
   );
 };

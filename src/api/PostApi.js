@@ -6,6 +6,12 @@ export class PostApi {
     this.apiClient = new ApiClient();
   }
 
+  async getMyPosts(userId) {
+    return await this.apiClient.get(
+      POSTS.USER.GET.replace("<user_id>", userId),
+    );
+  }
+
   async getPosts(queries = {}) {
     const query = new URLSearchParams(queries).toString();
     const res = await this.apiClient.get(

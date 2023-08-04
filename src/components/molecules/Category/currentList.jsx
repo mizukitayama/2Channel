@@ -1,12 +1,12 @@
 import { Icon, Table } from "semantic-ui-react";
 import { PostApi } from "../../../api/PostApi";
-import { useState, useEffect,useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { CategoryApi } from "../../../api/CategoryApi";
 import { UpdateCategories } from "../../../pages/adminPage";
 
 export const CategoryCurrentList = ({ categories }) => {
   const [postCounts, setPostCounts] = useState({});
-  const { fetchCategories } = useContext(UpdateCategories)
+  const { fetchCategories } = useContext(UpdateCategories);
   const categoryKeys = Object.keys(categories);
 
   const postApi = new PostApi();
@@ -25,23 +25,24 @@ export const CategoryCurrentList = ({ categories }) => {
             counts[category] = 0;
           });
       })
-    )
-    .then(() => setPostCounts(counts));
+    ).then(() => setPostCounts(counts));
   }, [categories]);
 
-
-  const categoryApi = new CategoryApi()
+  const categoryApi = new CategoryApi();
   const deleteCategories = (key) => {
-    console.log(key)
+    if (!window.confirm("カテゴリーを削除してもよろしいですか？")) return;
+    console.log(key);
     const params = new URLSearchParams();
     params.append("category_id", key);
-    categoryApi.deleteCategory(key)
-    .then((res) => {
-      fetchCategories()
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
+    categoryApi
+      .deleteCategory(key)
+      .then((res) => {
+        fetchCategories();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -58,11 +59,18 @@ export const CategoryCurrentList = ({ categories }) => {
               return (
                 <Table.Row>
                   <Table.Cell>
-                  <div onClick={() => deleteCategories(category)}>
-                    <Icon name="trash" size="small" />  {categories[category].category_name}
+                      {categories[category].category_name != "その他" && (
+                        <>
+                    <div onClick={() => deleteCategories(category)}>
+                          <Icon name="trash" size="small" />{" "}
                     </div>
-                    </Table.Cell>
-                  <Table.Cell>{postCounts[category] ? postCounts[category] : 0}</Table.Cell>
+                        </>
+                          )}
+                          {categories[category].category_name}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {postCounts[category] ? postCounts[category] : 0}
+                  </Table.Cell>
                 </Table.Row>
               );
             })}

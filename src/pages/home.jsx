@@ -39,7 +39,26 @@ export const Home = () => {
       });
   };
 
+  const fetchMyPosts = () => {
+    const postApi = new PostApi();
+    const userId = localStorage.getItem("GMO2ch.user_id")
+    console.log(userId, "user id")
+    postApi
+      .getMyPosts(userId)
+      .then((res) => {
+        setPosts(res.post_list);
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
   const fetchPostsByCategory = (category) => {
+    if (category === "mine") {
+      fetchMyPosts()
+      return
+    }
     setTasksLoading(true);
     setPosts([]);
     const postApi = new PostApi();
@@ -48,6 +67,7 @@ export const Home = () => {
         category: category,
       })
       .then((res) => {
+        console.log(res);
         setPosts(res);
       })
       .catch((err) => {

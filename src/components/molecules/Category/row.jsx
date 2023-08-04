@@ -32,6 +32,12 @@ export const CategoryRow = (props) => {
             />
           );
         })}
+        <Menu.Item
+          name="自分の投稿"
+          active={activeCategory === "mine"}
+          onClick={() => handleActiveCategory("mine")}
+          class
+        />
       </Menu>
     </div>
   );
