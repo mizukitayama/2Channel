@@ -6,8 +6,10 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AdminPage } from "./pages/adminPage.jsx";
 import { AuthCheck } from "./pages/authCheck.jsx";
+import { Register } from "./pages/register.jsx";
 
 export default function App() {
+  const isOwner = localStorage.getItem("GMO2ch.is_owner");
   return (
     <div className="App">
       <div className="relative">
@@ -20,10 +22,17 @@ export default function App() {
                 element={<Home />}
                 className="absolute inset-0"
               />
-              <Route path="/admin" element={<AdminPage />} />
+              {isOwner === "true" && (
+                <Route path="/admin" element={<AdminPage />} />
+              )}
               <Route
                 path="/login"
                 element={<Login />}
+                className="absolute inset-0"
+              />
+              <Route
+                path="/register"
+                element={<Register />}
                 className="absolute inset-0"
               />
             </Routes>
