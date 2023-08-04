@@ -9,6 +9,7 @@ import {
   Message,
   Dimmer,
   Loader,
+  Label,
 } from "semantic-ui-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -143,6 +144,11 @@ export const PostCard = (props) => {
               <Comment.Author as="a">{post.user_name}</Comment.Author>
               <Comment.Metadata>
                 <div>{getDateLabel(post.created_at)}</div>
+                <div className="ml-[4px]">
+                  <Label as="a" size="mini">
+                    {post.category}
+                  </Label>
+                </div>
               </Comment.Metadata>
               {post.user_id === user_id && (
                 <div className="float-right">
