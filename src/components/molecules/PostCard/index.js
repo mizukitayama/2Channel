@@ -45,7 +45,7 @@ export const PostCard = (props) => {
   };
 
   const onEditingTextChange = (str) => {
-    if (str.length >= 100) {
+    if (str.length >= 1000) {
       setError(true);
     } else {
       setError(false);
@@ -75,7 +75,7 @@ export const PostCard = (props) => {
   };
 
   const putEditedPost = () => {
-    if (editingText.length >= 100 || editingText.length <= 0) {
+    if (editingText.length >= 1000 || editingText.length <= 0) {
       return;
     }
     const params = new URLSearchParams();
@@ -196,7 +196,7 @@ export const PostCard = (props) => {
                     </Input>
                     {error && (
                       <Message color="red">
-                        だめです。100字未満で入力してください。
+                        だめです。1000字未満で入力してください。
                       </Message>
                     )}
                   </Form>
