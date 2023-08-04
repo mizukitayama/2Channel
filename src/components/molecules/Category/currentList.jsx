@@ -58,21 +58,21 @@ export const CategoryCurrentList = ({ categories }) => {
             {categoryKeys.map((category) => {
               return (
                 <Table.Row>
-                  <Table.Cell>
-                    {categories[category].category_name != "その他" ? (
-                      <>
-                        <div onClick={() => deleteCategories(category)}>
-                          <Icon name="trash" size="small" />{" "}
-                          {categories[category].category_name}
-                        </div>
-                      </>
-                    ) : (
-                      <>{categories[category].category_name}</>
-                    )}
-                  </Table.Cell>
-                  <Table.Cell>
-                    {postCounts[category] ? postCounts[category] : 0}
-                  </Table.Cell>
+                  {categories[category].category_name != "その他" && (
+                    <>
+                      <Table.Cell>
+                        <>
+                          <div onClick={() => deleteCategories(category)}>
+                            <Icon name="trash" size="small" />{" "}
+                            {categories[category].category_name}
+                          </div>
+                        </>
+                      </Table.Cell>
+                      <Table.Cell>
+                        {postCounts[category] ? postCounts[category] : 0}
+                      </Table.Cell>
+                    </>
+                  )}
                 </Table.Row>
               );
             })}
