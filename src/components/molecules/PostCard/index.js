@@ -10,6 +10,9 @@ import {
   Dimmer,
   Loader,
 } from "semantic-ui-react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 import { PostApi } from "../../../api/PostApi";
 import { UpdatePosts } from "../../../pages/home";
 
@@ -118,7 +121,12 @@ export const PostCard = (props) => {
                 </div>
               )}
               <Comment.Text>
-                <div className="whitespace-pre">{post.post_text}</div>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  className="whitespace-pre"
+                >
+                  {post.post_text}
+                </ReactMarkdown>
               </Comment.Text>
             </Comment.Content>
           </Comment>
@@ -235,7 +243,12 @@ const Question = ({ question, post }) => {
             </div>
           )}
           <Comment.Text>
-            <p className="whitespace-pre">{question.text}</p>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              className="whitespace-pre"
+            >
+              {question.text}
+            </ReactMarkdown>
           </Comment.Text>
           {question.reply_list.length <= 0 && ( // 返信がない場合のみ表示
             <ReplyForm
@@ -317,7 +330,12 @@ const Reply = ({ reply, question, post, showReplyForm }) => {
             </div>
           )}
           <Comment.Text>
-            <div className="whitespace-pre">{reply.text}</div>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              className="whitespace-pre"
+            >
+              {reply.text}
+            </ReactMarkdown>
           </Comment.Text>
           {showReplyForm && ( // 末尾にのみ表示
             <ReplyForm

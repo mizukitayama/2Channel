@@ -31,23 +31,20 @@ export const Header = () => {
 
   const triggermd = (
     <>
-        <Image src={userImage} avatar /> {userName}
+      <Image src={userImage} avatar /> {userName}
     </>
   );
-  const trigger = (
-    <>{userName}
-    </>
-  );
-let options;
+  const trigger = <>{userName}</>;
+  let options;
   if (isUserOwner) {
     options = [
-      { key: "home", value: "home", text: "ホーム"},
+      { key: "home", value: "home", text: "ホーム" },
       { key: "settings", value: "settings", text: "管理者画面" },
       { key: "sign-out", value: "sign-out", text: "ログアウト" },
     ];
   } else {
     options = [
-      { key: "home", value: "home", text: "ホーム"},
+      { key: "home", value: "home", text: "ホーム" },
       { key: "sign-out", value: "sign-out", text: "ログアウト" },
     ];
   }

@@ -41,9 +41,7 @@ export const Main = (props) => {
           ))}
           {searchHitPosts.length === 0 && (
             <Segment placeholder>
-              <h3 className="text-center text-gray-300">
-                まだ投稿がありません 🐥
-              </h3>
+              <h3 className="text-center text-gray-300">投稿がありません 🐥</h3>
             </Segment>
           )}
         </>

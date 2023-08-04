@@ -3,7 +3,12 @@ import "./index.js";
 import { Home } from "./pages/home";
 import { Login } from "./pages/login";
 import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
 import { AdminPage } from "./pages/adminPage.jsx";
 import { AuthCheck } from "./pages/authCheck.jsx";
 
@@ -26,6 +31,7 @@ export default function App() {
                 element={<Login />}
                 className="absolute inset-0"
               />
+              <Route path="*" element={<Navigate replace to="/" />} />
             </Routes>
           </AuthCheck>
         </Router>
