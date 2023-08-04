@@ -14,6 +14,12 @@ export const Category = (props) => {
     onClick(category);
   };
 
+  let other_id = -1;
+  Object.keys(categories).forEach((key) => {
+    if (categories[key].category_name === "その他") {
+      other_id = key;
+    }
+  });
   return (
     <Menu pointing secondary vertical fluid>
       <Menu.Item
@@ -24,14 +30,25 @@ export const Category = (props) => {
       />
       {categoryKeys.map((category) => {
         return (
-          <Menu.Item
-            name={categories[category].category_name}
-            active={activeCategory === `${category}`}
-            onClick={() => handleActiveCategory(category)}
-            className="text-lg"
-          />
+          <>
+            {categories[category].category_name === "その他" ? null : (
+              <Menu.Item
+                name={categories[category].category_name}
+                active={activeCategory === `${category}`}
+                onClick={() => handleActiveCategory(category)}
+                className="text-lg"
+              />
+            )}
+          </>
         );
       })}
+
+      <Menu.Item
+        name="その他"
+        active={activeCategory === other_id}
+        onClick={() => handleActiveCategory(other_id)}
+        className="text-lg"
+      />
       <Menu.Item
         name="自分の投稿"
         active={activeCategory === "mine"}
