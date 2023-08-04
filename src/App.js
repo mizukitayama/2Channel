@@ -27,9 +27,7 @@ export default function App() {
                 element={<Home />}
                 className="absolute inset-0"
               />
-              {isOwner === "true" && (
-                <Route path="/admin" element={<AdminPage />} />
-              )}
+              <Route path="/admin" element={<AdminPage />} />
               <Route
                 path="/login"
                 element={<Login />}
